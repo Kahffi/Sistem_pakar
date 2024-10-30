@@ -1,6 +1,6 @@
 import { QUESTIONS } from "../constants/QUESTIONS";
 import QuestionItem from "@/components/QuestionItem";
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import useRule from "@/hooks/useRule";
 import { Button } from "@/components/ui/button";
 import ExpertCF from "@/constants/Certainty";
@@ -71,12 +71,44 @@ export default function HomePage() {
 
     console.log("All CF:", allCF);
     setAllCf(allCF);
-    setSubmitted(false);
+    setSubmitted(true);
   }, [answers, rules]);
 
+  const cfCombined = useMemo(() => {
+    if (allCf.length < 1) return;
+    const cfCombined = [];
+
+    for (let i = 0; i < allCf.length; i++) {
+      const eachCF = allCf[i];
+      let cfOld = 0;
+      for (let j = 0; j < eachCF.length; j += 2) {
+        const firstValue = cfOld === 0 ? eachCF[j] || 0 : cfOld;
+        const secondValue = eachCF[j + 1] || 0;
+        const thirdvalue = 1 - firstValue;
+        cfOld = firstValue + secondValue * thirdvalue;
+      }
+      cfCombined.push(cfOld);
+    }
+    return cfCombined;
+  }, [allCf]);
+
+  const conclusion = useMemo(() => {
+    if (!cfCombined) return;
+    let highestVal = cfCombined[0]!;
+    let highestValIdx = 0;
+    cfCombined.forEach((val, idx) => {
+      if (val > highestVal) {
+        highestVal = val;
+        highestValIdx = idx;
+      }
+    });
+
+    return { code: ExpertCF[highestValIdx][0], val: highestVal };
+  }, [cfCombined]);
+  console.log(cfCombined);
   return (
     <div className="flex flex-col items-center">
-      {submitted ? (
+      {!submitted ? (
         <>
           <div className="flex flex-wrap gap-5 p-5 justify-around">
             {QUESTIONS.map((question, idx) => {
@@ -97,7 +129,10 @@ export default function HomePage() {
           </Button>
         </>
       ) : (
-        <div></div>
+        <div>
+          <p>{conclusion.code}</p>
+          <p>{`Tingkat kepercayaan: ${conclusion.val * 100}`}</p>
+        </div>
       )}
     </div>
   );
