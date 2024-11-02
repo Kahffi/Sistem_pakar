@@ -3,28 +3,31 @@ import QuestionItem from "@/components/QuestionItem";
 import { useCallback, useMemo, useState } from "react";
 import useRule from "@/hooks/useRule";
 import { Button } from "@/components/ui/button";
-import ExpertCF from "@/constants/Certainty";
+import useInferenceEngine from "@/inferenceEngine";
 export type TAnswer = {
-  questionCode: string;
+  questionCode: string | number;
   userCf: number | string;
 };
 
 export default function HomePage() {
   const [rawAnswers, setRawAnswers] = useState<TAnswer[]>([]);
-  const [allCf, setAllCf] = useState<number[][]>([[]]);
+  // const [allCf, setAllCf] = useState<number[][]>([[]]);
   const [submitted, setSubmitted] = useState(false);
   const { rules } = useRule();
+  // const [facts, setFacts]
 
-  const answers = useMemo(() => {
+  const answers: TAnswer[] = useMemo(() => {
     const answers = rawAnswers.map((ans) => {
-      if (SPECIALQUESTION.has(ans.questionCode))
-        return { qestionCode: ans.userCf, userCF: 1 };
+      if (SPECIALQUESTION.has(ans.questionCode as string))
+        return { questionCode: ans.userCf, userCf: 1 };
       return ans;
     });
     return answers;
   }, [rawAnswers]);
 
-  console.log(answers, "parsed answers");
+  // console.log(answers, "parsed answers");
+  const { allCF, diagnose } = useInferenceEngine(answers);
+  // console.log(allCF);
 
   const handleAnswer = useCallback(
     (answer: TAnswer) => {
@@ -119,7 +122,9 @@ export default function HomePage() {
     if (answers.length !== QUESTIONS.length)
       alert("Mohon isi semua pertanyaan");
     console.log(answers);
-  }, [answers]);
+    diagnose(rules);
+    setSubmitted(true);
+  }, [answers, diagnose, rules]);
   return (
     <div className="flex flex-col items-center">
       {!submitted ? (
@@ -144,8 +149,14 @@ export default function HomePage() {
         </>
       ) : (
         <div>
-          <p>{conclusion.code}</p>
-          <p>{`Tingkat kepercayaan: ${conclusion.val * 100}`}</p>
+          {Array.from(allCF.entries()).map(([code, cf]) => {
+            return (
+              <div key={code}>
+                <p>{code}</p>
+                <p>{`Tingkat kepercayaan: ${cf}`}</p>
+              </div>
+            );
+          })}
         </div>
       )}
     </div>

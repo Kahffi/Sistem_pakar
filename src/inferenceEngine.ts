@@ -1,62 +1,91 @@
 import { useCallback, useEffect, useState } from "react";
 import { Rule } from "./hooks/useRule";
+import { TAnswer } from "./pages/HomePage";
 
-type TUserData = {
-  questionCode: string;
-  userCf: number;
-};
+function useInferenceEngine(
+  userData: (
+    | TAnswer
+    | {
+        qestionCode: string | number;
+        userCF: number;
+      }
+  )[]
+) {
+  const [facts, setFacts] = useState<Set<string | undefined>>(new Set([]));
+  const [allCF, setAllCF] = useState<Map<string, number>>(new Map());
 
-function useInferenceEngine(userData: TUserData[]) {
-  const [facts, setFacts] = useState<Set<string>>(new Set([]));
-  const [inferredFacts, setInferredFacts] = useState<Map<string, number>>(
-    new Map()
-  );
-  function addFact(newFact: string) {
-    const temp = new Set(facts);
-    temp.add(newFact);
-    setFacts(temp);
-  }
+  // const [inferredFacts, setInferredFacts] = useState<Map<string, number>>(
+  //   new Map()
+  // );
+
   //   initialize facts from user answers
   useEffect(() => {
     if (userData.length === 0) return;
-    const newFacts = userData.map(({ questionCode }) => {
-      return questionCode;
+    console.log(userData[0], "first user data");
+    const newFacts: TAnswer[] = [];
+    userData.forEach((answer) => {
+      if ((answer as TAnswer).userCf > 0) {
+        newFacts.push((answer as TAnswer).questionCode);
+      }
     });
+    console.log(userData, "original data");
+    console.log(newFacts, "new Facts");
     setFacts(new Set(newFacts));
   }, [userData]);
 
-  function minRule(userCF: number[]) {
-    return userCF.reduce((acc, current) => Math.min(acc, current), 100);
+  function minRule(cfTotal: number[]) {
+    return cfTotal.reduce((acc, current) => Math.min(acc, current), 1);
   }
 
-  function calculateCF(userCF: number, expertCF: number) {
-    return userCF * expertCF;
-  }
+  // function calculateCF(userCF: number, expertCF: number) {
+  //   return userCF * expertCF;
+  // }
 
-  function combineCF(oldCF: number, newCF: number) {
-    return oldCF + newCF * (1 - oldCF);
-  }
+  // function combineCF(oldCF: number, newCF: number) {
+  //   return oldCF + newCF * (1 - oldCF);
+  // }
 
-  const diagnose = useCallback((rules: Rule[]) => {
-    const allCF = new Map<string, number>();
-    const CfTotal = 0;
-    const newFacts = new Set(facts);
-    for (const rule of rules) {
-      const metRequirements = rule.antecedent.every((ant) => facts.has(ant));
-      if (metRequirements) {
-        const userCFs: number[] = [];
-        let userCf = 1;
-        rule.antecedent.forEach((questionCode) => {
-          userCFs.push(
-            userData.find((data) => data.questionCode === questionCode)!.userCf!
-          );
-        });
-        // if (rule.antecedent.length > 1) {
-        //   userCf = minRule(userCFs);
-        // }
-        // const calculatedCF = calculateCF(userCf, rule.expertCF);
-        // allCF.set(rule.consequent, calculatedCF);
+  const diagnose = useCallback(
+    (rules: Rule[]) => {
+      const tempAllCF = new Map<string, number>(allCF);
+      const tempFacts = new Set(facts);
+      console.log("diagnosing");
+      for (const rule of rules) {
+        console.log("enter top loop");
+        const metRequirements = rule.antecedent.every((ant) =>
+          tempFacts.has(ant)
+        );
+        console.log("met requirements?", metRequirements);
+        console.log(facts, "facts");
+        if (metRequirements) {
+          const cfTotal: number[] = [];
+          // menghitung cf total untuk setiap antecedent
+          rule.antecedent.forEach((code) => {
+            // oldCf: jika cf sudah dihitung sebelumnya, maka kalikan dengan cfUser
+            // jika belum kalikan cfUser dengan 1
+
+            const oldCf = tempAllCF.get(code) ? tempAllCF.get(code) : 1;
+            let userCf: unknown = userData.find(
+              (userData) => (userData as TAnswer).questionCode === code
+            );
+            userCf = userCf ? (userCf as TAnswer).userCf : 1;
+            // menghitung cf masing-masing lalu menambahkan ke cfTotal
+            cfTotal.push(oldCf! * (userCf as number));
+          });
+          // menentukan cfTotal
+          tempAllCF.set(rule.consequent, minRule(cfTotal) * rule.expertCF);
+          tempFacts.add(rule.consequent);
+        }
       }
-    }
-  }, []);
+      setFacts(new Set(tempFacts));
+      setAllCF(new Map(tempAllCF));
+
+      console.log(tempAllCF, "allCF");
+    },
+    [facts, userData, allCF]
+  );
+
+  return { diagnose, allCF, facts };
 }
+
+export default useInferenceEngine;

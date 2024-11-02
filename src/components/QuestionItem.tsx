@@ -22,13 +22,12 @@ export default function QuestionItem({
   question,
   number,
   questionCode,
-  cfEnabled = false,
   handleChange,
 }: Props) {
   function handleValueChange(e: string) {
     if (SPECIALQUESTION.has(questionCode))
       handleChange({ questionCode: questionCode, userCf: e });
-    else handleChange({ questionCode: questionCode, userCf: parseInt(e) });
+    else handleChange({ questionCode: questionCode, userCf: parseFloat(e) });
   }
   return (
     <Card className="w-[380px]">
@@ -40,11 +39,14 @@ export default function QuestionItem({
           <RadioGroup onValueChange={handleValueChange}>
             <div className="flex gap-5 justify-around">
               <div className="flex flex-col gap-2 items-center justify-center">
-                <RadioGroupItem value="-1" id={questionCode + "cf-tidak"} />
+                <RadioGroupItem value="0" id={questionCode + "cf-tidak"} />
                 <label htmlFor={questionCode + "cf-tidak"}>Tidak</label>
               </div>
               <div className="flex flex-col gap-2 items-center justify-center">
-                <RadioGroupItem value="0" id={questionCode + "cf-tidak-tahu"} />
+                <RadioGroupItem
+                  value="0.5"
+                  id={questionCode + "cf-tidak-tahu"}
+                />
                 <label htmlFor={questionCode + "cf-tidak-tahu"}>
                   Tidak tahu
                 </label>
