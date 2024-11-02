@@ -8,6 +8,7 @@ import {
 } from "./ui/card";
 import { Button } from "./ui/button";
 import { TAnswer } from "@/pages/HomePage";
+import { SPECIALQUESTION } from "@/constants/QUESTIONS";
 
 type Props = {
   question: string;
@@ -21,11 +22,12 @@ export default function QuestionItem({
   question,
   number,
   questionCode,
-  cfEnabled = false,
   handleChange,
 }: Props) {
   function handleValueChange(e: string) {
-    handleChange({ questionCode: questionCode, userCf: parseInt(e) });
+    if (SPECIALQUESTION.has(questionCode))
+      handleChange({ questionCode: questionCode, userCf: e });
+    else handleChange({ questionCode: questionCode, userCf: parseFloat(e) });
   }
   return (
     <Card className="w-[380px]">
@@ -33,15 +35,18 @@ export default function QuestionItem({
         <CardTitle>{number + ". " + question}</CardTitle>
       </CardHeader>
       <CardContent>
-        {cfEnabled ? (
+        {!SPECIALQUESTION.has(questionCode) ? (
           <RadioGroup onValueChange={handleValueChange}>
             <div className="flex gap-5 justify-around">
               <div className="flex flex-col gap-2 items-center justify-center">
-                <RadioGroupItem value="-1" id={questionCode + "cf-tidak"} />
+                <RadioGroupItem value="0" id={questionCode + "cf-tidak"} />
                 <label htmlFor={questionCode + "cf-tidak"}>Tidak</label>
               </div>
               <div className="flex flex-col gap-2 items-center justify-center">
-                <RadioGroupItem value="0" id={questionCode + "cf-tidak-tahu"} />
+                <RadioGroupItem
+                  value="0.5"
+                  id={questionCode + "cf-tidak-tahu"}
+                />
                 <label htmlFor={questionCode + "cf-tidak-tahu"}>
                   Tidak tahu
                 </label>
@@ -54,8 +59,27 @@ export default function QuestionItem({
           </RadioGroup>
         ) : (
           <div>
-            <Button>Ya</Button>
-            <Button>Tidak</Button>
+            <RadioGroup onValueChange={handleValueChange}>
+              <div className="flex flex-col gap-5 items-start">
+                {SPECIALQUESTION.get(questionCode)?.map(
+                  ({ code, statement }) => {
+                    return (
+                      <div
+                        key={code}
+                        className="flex gap-2 items-center justify-center"
+                      >
+                        <RadioGroupItem value={code} id={statement} />
+                        <label htmlFor={statement}>{statement}</label>
+                      </div>
+                    );
+                  }
+                )}
+                {/* <div className="flex flex-col gap-2 items-center justify-center">
+                  <RadioGroupItem value="-1" id={questionCode + "cf-tidak"} />
+                  <label htmlFor={questionCode + "cf-tidak"}>Tidak</label>
+                </div> */}
+              </div>
+            </RadioGroup>
           </div>
         )}
       </CardContent>

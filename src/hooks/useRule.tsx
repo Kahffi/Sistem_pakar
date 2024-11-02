@@ -3,6 +3,7 @@ import KB from "@/constants/knowledge_base.txt";
 export type Rule = {
   antecedent: string[];
   consequent: string;
+  expertCF: number;
 };
 
 export default function useRule() {
@@ -18,8 +19,9 @@ export default function useRule() {
         const tempRules: Rule[] = [];
         lines.forEach((line) => {
           tempRules.push({
-            consequent: line.split(">")[1],
-            antecedent: [...line.split(">")[0].split(",")],
+            consequent: line.split("|")[0].split(">")[1],
+            antecedent: [...line.split("|")[0].split(">")[0].split(",")],
+            expertCF: parseFloat(line.split("|")[1]),
           });
         });
 
