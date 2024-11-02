@@ -56,68 +56,6 @@ export default function HomePage() {
     [rawAnswers]
   );
 
-  // const handleSubmit = useCallback(() => {
-  //   const allCF = [];
-
-  //   for (const rule of rules) {
-  //     const cfPerDisease = [];
-
-  //     for (const expertKey of rule.antecedent) {
-  //       const userEntry = rawAnswers.find(
-  //         ({ questionCode }) => questionCode === expertKey
-  //       );
-  //       // console.log(expertKey, "expert");
-  //       const userValue = userEntry ? userEntry.userCf : 0;
-  //       const expValue = ExpertCF.find(([code]) => code === expertKey)!;
-  //       const cfResult = (expValue[1] as number) * userValue;
-  //       cfPerDisease.push(cfResult);
-
-  //       // console.log(
-  //       //   `${expertKey} Data Expert = ${expValue}, User Data = ${userValue}`
-  //       // );
-  //     }
-
-  //     allCF.push(cfPerDisease);
-  //   }
-
-  //   // console.log("All CF:", allCF);
-  //   setAllCf(allCF);
-  //   setSubmitted(true);
-  // }, [rawAnswers, rules]);
-
-  // const cfCombined = useMemo(() => {
-  //   if (allCf.length < 1) return;
-  //   const cfCombined = [];
-
-  //   for (let i = 0; i < allCf.length; i++) {
-  //     const eachCF = allCf[i];
-  //     let cfOld = 0;
-  //     for (let j = 0; j < eachCF.length; j += 2) {
-  //       const firstValue = cfOld === 0 ? eachCF[j] || 0 : cfOld;
-  //       const secondValue = eachCF[j + 1] || 0;
-  //       const thirdvalue = 1 - firstValue;
-  //       cfOld = firstValue + secondValue * thirdvalue;
-  //     }
-  //     cfCombined.push(cfOld);
-  //   }
-  //   return cfCombined;
-  // }, [allCf]);
-
-  // const conclusion = useMemo(() => {
-  //   if (!cfCombined) return;
-  //   let highestVal = cfCombined[0]!;
-  //   let highestValIdx = 0;
-  //   cfCombined.forEach((val, idx) => {
-  //     if (val > highestVal) {
-  //       highestVal = val;
-  //       highestValIdx = idx;
-  //     }
-  //   });
-
-  //   return { code: ExpertCF[highestValIdx][0], val: highestVal };
-  // }, [cfCombined]);
-  // console.log(cfCombined);
-
   const handleSubmit = useCallback(() => {
     if (answers.length !== QUESTIONS.length)
       alert("Mohon isi semua pertanyaan");

@@ -2,15 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { Rule } from "./hooks/useRule";
 import { TAnswer } from "./pages/HomePage";
 
-function useInferenceEngine(
-  userData: (
-    | TAnswer
-    | {
-        qestionCode: string | number;
-        userCF: number;
-      }
-  )[]
-) {
+function useInferenceEngine(userData: TAnswer[]) {
   const [facts, setFacts] = useState<Set<string | undefined>>(new Set([]));
   const [allCF, setAllCF] = useState<Map<string, number>>(new Map());
 
@@ -18,10 +10,10 @@ function useInferenceEngine(
   useEffect(() => {
     if (userData.length === 0) return;
     console.log(userData[0], "first user data");
-    const newFacts: TAnswer[] = [];
+    const newFacts: string[] = [];
     userData.forEach((answer) => {
-      if ((answer as TAnswer).userCf > 0) {
-        newFacts.push((answer as TAnswer).questionCode);
+      if (((answer as TAnswer).userCf as number) > 0) {
+        newFacts.push((answer as TAnswer).questionCode as string);
       }
     });
     console.log(userData, "original data");
