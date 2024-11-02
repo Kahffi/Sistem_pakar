@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Rule } from "./hooks/useRule";
 import { TAnswer } from "./pages/HomePage";
 
@@ -13,10 +13,6 @@ function useInferenceEngine(
 ) {
   const [facts, setFacts] = useState<Set<string | undefined>>(new Set([]));
   const [allCF, setAllCF] = useState<Map<string, number>>(new Map());
-
-  // const [inferredFacts, setInferredFacts] = useState<Map<string, number>>(
-  //   new Map()
-  // );
 
   //   initialize facts from user answers
   useEffect(() => {
@@ -37,13 +33,11 @@ function useInferenceEngine(
     return cfTotal.reduce((acc, current) => Math.min(acc, current), 1);
   }
 
-  // function calculateCF(userCF: number, expertCF: number) {
-  //   return userCF * expertCF;
-  // }
-
-  // function combineCF(oldCF: number, newCF: number) {
-  //   return oldCF + newCF * (1 - oldCF);
-  // }
+  const allCFSorted = useMemo(() => {
+    const sorted = Array.from(allCF.entries());
+    sorted.sort((a, b) => (b[1] as number) - (a[1] as number));
+    return sorted;
+  }, [allCF]);
 
   const diagnose = useCallback(
     (rules: Rule[]) => {
@@ -85,7 +79,7 @@ function useInferenceEngine(
     [facts, userData, allCF]
   );
 
-  return { diagnose, allCF, facts };
+  return { diagnose, allCFSorted };
 }
 
 export default useInferenceEngine;

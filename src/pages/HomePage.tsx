@@ -26,7 +26,7 @@ export default function HomePage() {
   }, [rawAnswers]);
 
   // console.log(answers, "parsed answers");
-  const { allCF, diagnose } = useInferenceEngine(answers);
+  const { allCFSorted, diagnose } = useInferenceEngine(answers);
   // console.log(allCF);
 
   const handleAnswer = useCallback(
@@ -149,7 +149,7 @@ export default function HomePage() {
         </>
       ) : (
         <div>
-          {Array.from(allCF.entries()).map(([code, cf]) => {
+          {allCFSorted.map(([code, cf]) => {
             return (
               <div key={code}>
                 <p>{code}</p>
