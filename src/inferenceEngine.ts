@@ -53,6 +53,10 @@ function useInferenceEngine(userData: TAnswer[]) {
     [facts]
   );
 
+  function calculateParallel(oldCf: number, newCf: number) {
+    return oldCf + newCf - oldCf * newCf;
+  }
+
   const allCFSorted = useMemo(() => {
     const sorted = Array.from(allCF.entries());
     sorted.sort((a, b) => (b[1] as number) - (a[1] as number));
@@ -74,17 +78,28 @@ function useInferenceEngine(userData: TAnswer[]) {
             // oldCf: jika cf sudah dihitung sebelumnya, maka kalikan dengan cfUser
             // jika belum kalikan cfUser dengan 1
 
-            const oldCf = tempAllCF.get(code) ? tempAllCF.get(code) : 1;
-            let userCf: unknown = userData.find(
-              (userData) => userData.questionCode === code
-            );
-            userCf = userCf ? (userCf as TAnswer).userCf : 1;
+            // jika cf sudah dihitung sebelumnya, lakukan aturan sekuensial
+            const oldCf = tempAllCF.get(code) || 1;
+            const userCf: unknown =
+              userData.find((userData) => userData.questionCode === code)
+                ?.userCf || 1;
             // menghitung cf masing-masing lalu menambahkan ke cfTotal
+            // aturan sekuensial
             cfTotal.push(oldCf! * (userCf as number));
           });
           // menentukan cfTotal
-          tempAllCF.set(rule.consequent, minRule(cfTotal) * rule.expertCF);
-          tempFacts.add(rule.consequent);
+          // aturan parallel
+          if (tempAllCF.has(rule.consequent)) {
+            tempAllCF.set(
+              rule.consequent,
+              calculateParallel(
+                tempAllCF.get(rule.consequent)!,
+                minRule(cfTotal) * rule.expertCF
+              )
+            );
+          } else {
+            tempAllCF.set(rule.consequent, minRule(cfTotal) * rule.expertCF);
+          }
         }
       }
       setFacts(new Set(tempFacts));
