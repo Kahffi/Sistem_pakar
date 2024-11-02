@@ -4,33 +4,77 @@ import { useCallback, useMemo, useState } from "react";
 import useRule from "@/hooks/useRule";
 import { Button } from "@/components/ui/button";
 import useInferenceEngine from "@/inferenceEngine";
-export type TAnswer = {
+export type TRawAnswer = {
   questionCode: string | number;
   userCf: number | string;
 };
 
+export type TAnswer = {
+  questionCode: string;
+  userCf: number;
+};
+
+// const testData: TAnswer[] = [
+//   {
+//     questionCode: "G2",
+//     userCf: 1,
+//   },
+//   {
+//     questionCode: "G6",
+//     userCf: 1,
+//   },
+//   {
+//     questionCode: "G7",
+//     userCf: 0,
+//   },
+//   {
+//     questionCode: "G8",
+//     userCf: 1,
+//   },
+//   {
+//     questionCode: "G9",
+//     userCf: 0.5,
+//   },
+//   {
+//     questionCode: "G10",
+//     userCf: 0.5,
+//   },
+//   {
+//     questionCode: "G11",
+//     userCf: 1,
+//   },
+//   {
+//     questionCode: "G13",
+//     userCf: 1,
+//   },
+//   {
+//     questionCode: "G14",
+//     userCf: 1,
+//   },
+//   {
+//     questionCode: "G16",
+//     userCf: 1,
+//   },
+// ];
+
 export default function HomePage() {
-  const [rawAnswers, setRawAnswers] = useState<TAnswer[]>([]);
-  // const [allCf, setAllCf] = useState<number[][]>([[]]);
+  const [rawAnswers, setRawAnswers] = useState<TRawAnswer[]>([]);
   const [submitted, setSubmitted] = useState(false);
   const { rules } = useRule();
-  // const [facts, setFacts]
 
   const answers: TAnswer[] = useMemo(() => {
-    const answers = rawAnswers.map((ans) => {
+    const answers: TAnswer[] = rawAnswers.map((ans) => {
       if (SPECIALQUESTION.has(ans.questionCode as string))
-        return { questionCode: ans.userCf, userCf: 1 };
-      return ans;
+        return { questionCode: ans.userCf as string, userCf: 1 };
+      return ans as TAnswer;
     });
     return answers;
   }, [rawAnswers]);
 
-  // console.log(answers, "parsed answers");
   const { allCFSorted, diagnose } = useInferenceEngine(answers);
-  // console.log(allCF);
 
   const handleAnswer = useCallback(
-    (answer: TAnswer) => {
+    (answer: TRawAnswer) => {
       if (rawAnswers.length == 0) {
         setRawAnswers([answer]);
         return;
@@ -57,14 +101,17 @@ export default function HomePage() {
   );
 
   const handleSubmit = useCallback(() => {
-    if (answers.length !== QUESTIONS.length)
+    if (answers.length !== QUESTIONS.length) {
       alert("Mohon isi semua pertanyaan");
+      return;
+    }
     console.log(answers);
     diagnose(rules);
     setSubmitted(true);
   }, [answers, diagnose, rules]);
+
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center pt-5 pb-10">
       {!submitted ? (
         <>
           <div className="flex flex-wrap sm:flex-nowrap sm:flex-col gap-5 p-5 justify-around">

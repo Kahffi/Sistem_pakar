@@ -1,6 +1,6 @@
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
-import { TAnswer } from "@/pages/HomePage";
+import { TRawAnswer } from "@/pages/HomePage";
 import { SPECIALQUESTION } from "@/constants/QUESTIONS";
 
 type Props = {
@@ -8,7 +8,7 @@ type Props = {
   number: number;
   cfEnabled?: boolean;
   questionCode: string;
-  handleChange: (answer: TAnswer) => void;
+  handleChange: (answer: TRawAnswer) => void;
 };
 
 export default function QuestionItem({
@@ -41,7 +41,7 @@ export default function QuestionItem({
                   id={questionCode + "cf-tidak-tahu"}
                 />
                 <label htmlFor={questionCode + "cf-tidak-tahu"}>
-                  Tidak tahu
+                  Mungkin iya
                 </label>
               </div>
               <div className="flex flex-col gap-2 items-center justify-center">
@@ -57,12 +57,14 @@ export default function QuestionItem({
                 {SPECIALQUESTION.get(questionCode)?.map(
                   ({ code, statement }) => {
                     return (
-                      <div
-                        key={code}
-                        className="flex gap-2 items-center justify-center"
-                      >
-                        <RadioGroupItem value={code} id={statement} />
-                        <label htmlFor={statement}>{statement}</label>
+                      <div key={code} className="w-full">
+                        <label
+                          className="w-full flex gap-2 items-center "
+                          htmlFor={statement + code}
+                        >
+                          <RadioGroupItem value={code} id={statement + code} />
+                          {statement}
+                        </label>
                       </div>
                     );
                   }

@@ -5,25 +5,53 @@ import { TAnswer } from "./pages/HomePage";
 function useInferenceEngine(userData: TAnswer[]) {
   const [facts, setFacts] = useState<Set<string | undefined>>(new Set([]));
   const [allCF, setAllCF] = useState<Map<string, number>>(new Map());
-
   //   initialize facts from user answers
   useEffect(() => {
     if (userData.length === 0) return;
-    console.log(userData[0], "first user data");
+
     const newFacts: string[] = [];
     userData.forEach((answer) => {
-      if (((answer as TAnswer).userCf as number) > 0) {
-        newFacts.push((answer as TAnswer).questionCode as string);
-      }
+      // if (((answer as TRawAnswer).userCf as number) > 0) {
+      // }
+      newFacts.push(answer.questionCode);
     });
-    console.log(userData, "original data");
-    console.log(newFacts, "new Facts");
+
     setFacts(new Set(newFacts));
   }, [userData]);
 
   function minRule(cfTotal: number[]) {
     return cfTotal.reduce((acc, current) => Math.min(acc, current), 1);
   }
+
+  const factsHasAll = (list: string[], facts: Set<string | undefined>) =>
+    list.every((item) => facts.has(item));
+
+  const doForwardChaining = useCallback(
+    (rules: Rule[]) => {
+      const tempInferFacts = new Set<string>([]);
+
+      const tempFacts = new Set<string | undefined>(facts);
+
+      while (true) {
+        let inferred = false;
+        for (const rule of rules) {
+          if (
+            factsHasAll(rule.antecedent, tempFacts) &&
+            !tempInferFacts.has(rule.consequent)
+          ) {
+            tempFacts.add(rule.consequent);
+            tempInferFacts.add(rule.consequent);
+            inferred = true;
+            break;
+          }
+        }
+        if (!inferred) break;
+      }
+
+      return tempFacts;
+    },
+    [facts]
+  );
 
   const allCFSorted = useMemo(() => {
     const sorted = Array.from(allCF.entries());
@@ -34,15 +62,11 @@ function useInferenceEngine(userData: TAnswer[]) {
   const diagnose = useCallback(
     (rules: Rule[]) => {
       const tempAllCF = new Map<string, number>(allCF);
-      const tempFacts = new Set(facts);
-      console.log("diagnosing");
+      const tempFacts = new Set(doForwardChaining(rules));
       for (const rule of rules) {
-        console.log("enter top loop");
         const metRequirements = rule.antecedent.every((ant) =>
           tempFacts.has(ant)
         );
-        console.log("met requirements?", metRequirements);
-        console.log(facts, "facts");
         if (metRequirements) {
           const cfTotal: number[] = [];
           // menghitung cf total untuk setiap antecedent
@@ -52,7 +76,7 @@ function useInferenceEngine(userData: TAnswer[]) {
 
             const oldCf = tempAllCF.get(code) ? tempAllCF.get(code) : 1;
             let userCf: unknown = userData.find(
-              (userData) => (userData as TAnswer).questionCode === code
+              (userData) => userData.questionCode === code
             );
             userCf = userCf ? (userCf as TAnswer).userCf : 1;
             // menghitung cf masing-masing lalu menambahkan ke cfTotal
@@ -65,13 +89,11 @@ function useInferenceEngine(userData: TAnswer[]) {
       }
       setFacts(new Set(tempFacts));
       setAllCF(new Map(tempAllCF));
-
-      console.log(tempAllCF, "allCF");
     },
-    [facts, userData, allCF]
+    [userData, allCF, doForwardChaining]
   );
 
-  return { diagnose, allCFSorted };
+  return { diagnose, allCFSorted, doForwardChaining, facts };
 }
 
 export default useInferenceEngine;
