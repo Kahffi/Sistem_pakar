@@ -70,3 +70,11 @@ SPECIALQUESTION.set("S3", [
   { code: "G16", statement: "Iya" },
   { code: "G17", statement: "Tidak" },
 ]);
+
+export const PREDICTION_RESULT = new Map([
+  ["A1", "Air Laut Surut"],
+  ["A2", "Air Laut Pasang"],
+  ["A3", "Aman Beraktivitas di Pantai"],
+  ["A4", "Waspada Beraktivitas di Pantai"],
+  ["A5", "Berbahaya Beraktivitas di Pantai"],
+]);

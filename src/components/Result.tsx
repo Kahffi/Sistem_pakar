@@ -3,9 +3,11 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "./ui/card";
+import { PREDICTION_RESULT } from "@/constants/Constants";
 
 type Props = {
   allCF: [string, number][];
@@ -21,7 +23,7 @@ export default function Result({ allCF }: Props) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Hasil Diagnosa</CardTitle>
+        <CardTitle>{PREDICTION_RESULT.get(decission[0][0])}</CardTitle>
         <CardDescription>Halo gais</CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col items-center">
@@ -35,6 +37,9 @@ export default function Result({ allCF }: Props) {
           </div>
         </div>
       </CardContent>
+      <CardFooter>
+        <p>{`${PREDICTION_RESULT.get(decission[1][0])}: ${decission[1][1]}`}</p>
+      </CardFooter>
     </Card>
   );
 }
