@@ -71,10 +71,91 @@ SPECIALQUESTION.set("S3", [
   { code: "G17", statement: "Tidak" },
 ]);
 
-export const PREDICTION_RESULT = new Map([
-  ["A1", "Air Laut Surut"],
-  ["A2", "Air Laut Pasang"],
-  ["A3", "Aman Beraktivitas di Pantai"],
-  ["A4", "Waspada Beraktivitas di Pantai"],
-  ["A5", "Berbahaya Beraktivitas di Pantai"],
+// export const PREDICTION_RESULT = new Map([
+//   ["A1", "Air Laut Surut"],
+//   ["A2", "Air Laut Pasang"],
+//   ["A3", "Aman Beraktivitas di Pantai"],
+//   ["A4", "Waspada Beraktivitas di Pantai"],
+//   ["A5", "Berbahaya Beraktivitas di Pantai"],
+// ]);
+
+type TPredictionResult = {
+  name: string;
+  description: string;
+  advice: string[];
+};
+
+export const PREDICTION_RESULT = new Map<string, TPredictionResult>([
+  [
+    "A1",
+    {
+      name: "Air Surut",
+      description:
+        "Air laut sedang dalam kondisi surut, memberikan kesempatan bagi pengunjung untuk beraktivitas di tepi pantai dengan risiko gelombang yang lebih rendah.",
+      advice: [
+        "Air mungkin tidak surut terlalu jauh, jadi tetap nikmati aktivitas di tepi pantai, tetapi hindari bermain terlalu dekat dengan air. Perubahan ombak bisa saja tiba-tiba terjadi.",
+        "Air kemungkinan akan sedikit surut. Anda bisa bermain di area yang aman, tetapi tetap waspadai ombak yang mungkin mendadak naik.",
+        "Kondisi cukup ideal untuk menikmati pantai dengan nyaman. Jelajahi pasir pantai yang terbuka lebih luas, tetapi pastikan tetap berhati-hati, terutama bila ada anak-anak.",
+        "Kondisi air pasti surut. Ini adalah saat yang tepat untuk menikmati pantai dengan tenang dan bermain di pasir atau berjalan kaki menyusuri bibir pantai sangat aman. Meski begitu, tetap pantau keadaan sekitar.",
+      ],
+    },
+  ],
+  [
+    "A2",
+    {
+      name: "Air Pasang",
+      description:
+        "Air laut dalam kondisi pasang, menyebabkan area pantai lebih terendam air dan bisa meningkatkan risiko terseret arus jika terlalu dekat.",
+      advice: [
+        "Kecil kemungkinan air pasang. Aktivitas di pantai aman, namun tetap perhatikan garis air jika angin atau ombak mendadak meningkat.",
+        "Air pasang mungkin terjadi. Hindari berenang jauh dari tepi pantai dan amankan barang-barang Anda dari kemungkinan ombak yang mencapai lebih tinggi.",
+        "Air pasang berpotensi terjadi, sehingga disarankan untuk menjauh dari garis air. Batasi aktivitas yang terlalu dekat dengan laut untuk mencegah risiko terseret ombak.",
+        "Air pasang akan terjadi, dan aktivitas di area pantai yang dekat dengan laut sangat tidak disarankan. Nikmati pantai dari kejauhan atau tunggu kondisi lebih tenang sebelum kembali beraktivitas.",
+      ],
+    },
+  ],
+  [
+    "A3",
+    {
+      name: "Aman Beraktivitas di Pantai",
+      description:
+        "Kondisi pantai umumnya aman untuk berbagai aktivitas, termasuk berenang, bermain pasir, dan piknik.",
+      advice: [
+        "Kecil kemungkinan kondisi sepenuhnya aman, jadi perhatikan perubahan cuaca dan arus air yang bisa mendadak berubah.",
+        "Kondisi cukup aman, namun tetap waspadai angin dan arus. Aktivitas ringan dapat dilakukan, tetapi jangan terlalu jauh dari pantai.",
+        "Pantai cukup aman, cocok untuk aktivitas seperti berjalan di tepi air dan bermain di pasir. Pastikan tetap memperhatikan kondisi sekitar.",
+        "Pantai sepenuhnya aman. Anda dapat menikmati berbagai aktivitas di tepi pantai dengan aman, namun tetap perhatikan kondisi air.",
+      ],
+    },
+  ],
+  [
+    "A4",
+    {
+      name: "Waspada Beraktivitas di Pantai",
+      description:
+        "Kondisi pantai memerlukan kewaspadaan ekstra, seperti potensi angin kencang atau gelombang yang lebih tinggi dari biasanya.",
+      advice: [
+        "Kemungkinan kecil terjadi risiko, tetapi jangan lengah. Perhatikan tanda-tanda seperti angin yang berubah tiba-tiba atau ombak yang mendadak lebih tinggi.",
+        "Aktivitas ringan tetap bisa dilakukan, tetapi batasi jarak dengan garis air. Pastikan barang-barang tidak terlalu dekat dengan ombak, dan tetap awasi kondisi sekitar.",
+        "Kewaspadaan lebih tinggi diperlukan. Hindari berenang atau berada terlalu dekat dengan air, dan pastikan Anda dan keluarga aman dari risiko arus besar atau angin kencang.",
+        "Risiko pasti terjadi. Sebaiknya tunda aktivitas di pantai dan berlindung di area yang aman hingga kondisi pantai lebih stabil.",
+      ],
+    },
+  ],
+  [
+    "A5",
+    {
+      name: "Bahaya Beraktivitas di Pantai",
+      description:
+        "Kondisi pantai sangat berbahaya, dengan risiko besar yang dapat mengancam keselamatan, seperti angin kencang, arus kuat, atau gelombang besar.",
+      advice: [
+        "Risiko kecil, tetapi tetap waspadai perubahan cuaca. Jika ada tanda-tanda gelombang besar atau angin kencang, segera jaga jarak dari pantai.",
+        "Potensi bahaya mulai terlihat. Aktivitas di area pantai harus dibatasi, dan pastikan Anda berada di tempat yang aman. Jangan biarkan barang-barang atau anak-anak terlalu dekat dengan laut.",
+        "Risiko sangat nyata. Segera hindari area pantai dan amankan barang-barang ke tempat yang lebih aman. Batalkan aktivitas di pantai hingga cuaca membaik.",
+        "Bahaya besar akan terjadi. Evakuasi dari pantai adalah langkah terbaik. Jangan ambil risiko dengan berada di dekat laut. Utamakan keselamatan diri dan orang di sekitar Anda.",
+      ],
+    },
+  ],
 ]);
+
+new Map<string, object>();
