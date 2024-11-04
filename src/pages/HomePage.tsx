@@ -1,9 +1,10 @@
-import { QUESTIONS, SPECIALQUESTION } from "../constants/QUESTIONS";
+import { QUESTIONS, SPECIALQUESTION } from "../constants/Constants";
 import QuestionItem from "@/components/QuestionItem";
 import { useCallback, useMemo, useState } from "react";
 import useRule from "@/hooks/useRule";
 import { Button } from "@/components/ui/button";
 import useInferenceEngine from "@/inferenceEngine";
+import Result from "@/components/Result";
 export type TRawAnswer = {
   questionCode: string | number;
   userCf: number | string;
@@ -16,7 +17,7 @@ export type TAnswer = {
 
 // const testData: TAnswer[] = [
 //   {
-//     questionCode: "G2",
+//     questionCode: "G1",
 //     userCf: 1,
 //   },
 //   {
@@ -44,7 +45,7 @@ export type TAnswer = {
 //     userCf: 1,
 //   },
 //   {
-//     questionCode: "G13",
+//     questionCode: "G12",
 //     userCf: 1,
 //   },
 //   {
@@ -70,8 +71,10 @@ export default function HomePage() {
     });
     return answers;
   }, [rawAnswers]);
+  // const answers = testData;
 
   const { allCFSorted, diagnose } = useInferenceEngine(answers);
+  console.log(allCFSorted);
 
   const handleAnswer = useCallback(
     (answer: TRawAnswer) => {
@@ -115,14 +118,14 @@ export default function HomePage() {
       {!submitted ? (
         <>
           <div className="flex flex-wrap sm:flex-nowrap sm:flex-col gap-5 p-5 justify-around">
-            {QUESTIONS.map((question, idx) => {
+            {QUESTIONS.map(([code, question], idx) => {
               return (
                 <QuestionItem
                   number={idx + 1}
-                  question={question[1]}
+                  question={question}
                   cfEnabled={true}
-                  key={question[0]}
-                  questionCode={question[0]}
+                  key={code}
+                  questionCode={code}
                   handleChange={handleAnswer}
                 />
               );
@@ -133,16 +136,7 @@ export default function HomePage() {
           </Button>
         </>
       ) : (
-        <div>
-          {allCFSorted.map(([code, cf]) => {
-            return (
-              <div key={code}>
-                <p>{code}</p>
-                <p>{`Tingkat kepercayaan: ${cf}`}</p>
-              </div>
-            );
-          })}
-        </div>
+        <div>{<Result allCF={allCFSorted} />}</div>
       )}
     </div>
   );

@@ -1,7 +1,7 @@
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { TRawAnswer } from "@/pages/HomePage";
-import { SPECIALQUESTION } from "@/constants/QUESTIONS";
+import { SPECIALQUESTION } from "@/constants/Constants";
 
 type Props = {
   question: string;

@@ -66,7 +66,8 @@ function useInferenceEngine(userData: TAnswer[]) {
   const diagnose = useCallback(
     (rules: Rule[]) => {
       const tempAllCF = new Map<string, number>(allCF);
-      const tempFacts = new Set(doForwardChaining(rules));
+      // const tempFacts = new Set(doForwardChaining(rules));
+      const tempFacts = new Set(facts);
       for (const rule of rules) {
         const metRequirements = rule.antecedent.every((ant) =>
           tempFacts.has(ant)
@@ -100,6 +101,7 @@ function useInferenceEngine(userData: TAnswer[]) {
           } else {
             tempAllCF.set(rule.consequent, minRule(cfTotal) * rule.expertCF);
           }
+          tempFacts.add(rule.consequent);
         }
       }
       setFacts(new Set(tempFacts));
