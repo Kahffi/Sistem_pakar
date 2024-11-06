@@ -19,13 +19,16 @@ function useInferenceEngine(userData: TAnswer[]) {
     setFacts(new Set(newFacts));
   }, [userData]);
 
+  // Menghitung nilai minimum
   function minRule(cfTotal: number[]) {
     return cfTotal.reduce((acc, current) => Math.min(acc, current), 1);
   }
 
+  // Fungsi untuk mengecek apakah seluruh premise terpenuhi
   const factsHasAll = (list: string[], facts: Set<string | undefined>) =>
     list.every((item) => facts.has(item));
 
+  // Tidak digunakan
   const doForwardChaining = useCallback(
     (rules: Rule[]) => {
       const tempInferFacts = new Set<string>([]);
@@ -53,10 +56,12 @@ function useInferenceEngine(userData: TAnswer[]) {
     [facts]
   );
 
+  // Fungsi untuk menghitung hasil aturan paralel
   function calculateParallel(oldCf: number, newCf: number) {
     return oldCf + newCf - oldCf * newCf;
   }
 
+  //
   const allCFSorted = useMemo(() => {
     const sorted = Array.from(allCF.entries());
     sorted.sort((a, b) => (b[1] as number) - (a[1] as number));
@@ -66,12 +71,15 @@ function useInferenceEngine(userData: TAnswer[]) {
   const diagnose = useCallback(
     (rules: Rule[]) => {
       const tempAllCF = new Map<string, number>(allCF);
-      // const tempFacts = new Set(doForwardChaining(rules));
       const tempFacts = new Set(facts);
+
+      // mengecek rule satu per satu
       for (const rule of rules) {
+        // mengecek apakah kondisi rules terpenuhi
         const metRequirements = rule.antecedent.every((ant) =>
           tempFacts.has(ant)
         );
+        // jika terpenuhi lanjut
         if (metRequirements) {
           const cfTotal: number[] = [];
           // menghitung cf total untuk setiap antecedent
@@ -90,6 +98,7 @@ function useInferenceEngine(userData: TAnswer[]) {
           });
           // menentukan cfTotal
           // aturan parallel
+          // Jika CF rules sudah dihitung sebelumnya
           if (tempAllCF.has(rule.consequent)) {
             tempAllCF.set(
               rule.consequent,
@@ -98,6 +107,7 @@ function useInferenceEngine(userData: TAnswer[]) {
                 minRule(cfTotal) * rule.expertCF
               )
             );
+            // jika CF Belum pernah dihitung sebelumnya, kalikan dengan nilai minimum
           } else {
             tempAllCF.set(rule.consequent, minRule(cfTotal) * rule.expertCF);
           }
@@ -107,7 +117,7 @@ function useInferenceEngine(userData: TAnswer[]) {
       setFacts(new Set(tempFacts));
       setAllCF(new Map(tempAllCF));
     },
-    [userData, allCF, doForwardChaining]
+    [userData, allCF, facts]
   );
 
   return { diagnose, allCFSorted, doForwardChaining, facts };

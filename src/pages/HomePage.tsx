@@ -5,6 +5,8 @@ import useRule from "@/hooks/useRule";
 import { Button } from "@/components/ui/button";
 import useInferenceEngine from "@/inferenceEngine";
 import Result from "@/components/Result";
+import background from "@/assets/bg.jpeg";
+
 export type TRawAnswer = {
   questionCode: string | number;
   userCf: number | string;
@@ -114,10 +116,20 @@ export default function HomePage() {
   }, [answers, diagnose, rules]);
 
   return (
-    <div className="flex flex-col items-center pt-5 pb-10">
+    <div
+      className="flex flex-col items-center pt-5 pb-10 max-h-svh overflow-auto"
+      style={{
+        backgroundImage: `url(${background})`,
+        // backgroundRepeat: "repeat-x",
+        backgroundSize: "cover",
+      }}
+    >
       {!submitted ? (
         <>
-          <div className="flex flex-wrap sm:flex-nowrap sm:flex-col gap-5 p-5 justify-around">
+          <div className="flex flex-wrap items-center sm:flex-nowrap sm:flex-col gap-5 p-5 justify-around">
+            <h1 className="-mt-4 mb-5 font-bold text-3xl text-white">
+              Sistem Pakar Prediksi Pasang Surut Air Laut dan Keamanan Pantai
+            </h1>
             {QUESTIONS.map(([code, question], idx) => {
               return (
                 <QuestionItem
@@ -131,7 +143,11 @@ export default function HomePage() {
               );
             })}
           </div>
-          <Button onClick={handleSubmit} className="w-60">
+          <Button
+            onClick={handleSubmit}
+            className="w-60 text-md font-semibold "
+            style={{ backgroundColor: "#022090" }}
+          >
             Submit
           </Button>
         </>

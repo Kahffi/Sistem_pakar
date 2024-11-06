@@ -68,16 +68,26 @@ export default function Result({ allCF }: Props) {
 
   return (
     <div className="flex flex-col gap-10">
-      <Card className="max-w-lg">
+      <h1 className="font-bold text-3xl text-white text-center">
+        Hasil Diagnosis
+      </h1>
+      <Card
+        className="max-w-lg border-4 backdrop-blur-md bg-white/90"
+        style={{ borderColor: "#022090" }}
+      >
         <CardHeader>
-          <CardTitle>{`${
-            PREDICTION_RESULT.get(filteredResult.bahaya[0])?.name
-          }`}</CardTitle>
-          <CardDescription>{decisions[0].description}</CardDescription>
+          <CardTitle>
+            {
+              "Kondisi Pantai"
+              // `${
+              //   PREDICTION_RESULT.get(filteredResult.bahaya[0])?.name
+              // }`
+            }
+          </CardTitle>
         </CardHeader>
         <CardContent className="flex flex-col items-center gap-5">
           <p className="-mb-3">Tingkat Kepercayaan:</p>
-          <div className="flex justify-center p-1 bg-green-400 rounded-full drop-shadow-sm">
+          <div className="flex justify-center p-1 bg-green-400 rounded-full drop-shadow-sm -mb-2">
             <div className="flex justify-center items-center rounded-full bg-white border-gray-500 drop-shadow-lg min-w-28 min-h-28 p-3">
               {filteredResult && (
                 <p className="text-2xl font-semibold">
@@ -88,20 +98,28 @@ export default function Result({ allCF }: Props) {
               )}
             </div>
           </div>
-          <p>{`${decisions[0].advice}`}</p>
+          <h3 className="font-semibold text-xl">{`${
+            PREDICTION_RESULT.get(filteredResult.bahaya[0])?.name
+          }`}</h3>
+
+          <CardDescription className="-mt-4">
+            {decisions[0].description}
+          </CardDescription>
+
+          <p className="font-medium">{`${decisions[0].advice}`}</p>
         </CardContent>
       </Card>
 
-      <Card className="max-w-lg">
+      <Card
+        className="max-w-lg border-4 backdrop-blur-md bg-white/90"
+        style={{ borderColor: "#022090" }}
+      >
         <CardHeader>
-          <CardTitle>{`${
-            PREDICTION_RESULT.get(filteredResult.pasangSurut[0])?.name
-          }`}</CardTitle>
-          <CardDescription>{decisions[1].description}</CardDescription>
+          <CardTitle>Pasang/Surut Air Laut</CardTitle>
         </CardHeader>
         <CardContent className="flex flex-col items-center gap-5">
           <p className="-mb-3">Tingkat Kepercayaan:</p>
-          <div className="flex justify-center p-1 bg-green-400 rounded-full drop-shadow-sm">
+          <div className="flex justify-center p-1 bg-green-400 rounded-full drop-shadow-sm -mb-2">
             <div className="flex justify-center items-center rounded-full bg-white border-gray-500 drop-shadow-lg min-w-28 min-h-28 p-3">
               {filteredResult && (
                 <p className="text-2xl font-semibold">
@@ -112,6 +130,13 @@ export default function Result({ allCF }: Props) {
               )}
             </div>
           </div>
+          <h3 className="font-semibold text-xl">{`${
+            PREDICTION_RESULT.get(filteredResult.pasangSurut[0])?.name
+          }`}</h3>
+          <CardDescription className="-mt-4">
+            {decisions[1].description}
+          </CardDescription>
+
           <p>{`${decisions[1].advice}`}</p>
         </CardContent>
       </Card>

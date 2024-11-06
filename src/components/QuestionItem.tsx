@@ -23,11 +23,14 @@ export default function QuestionItem({
     else handleChange({ questionCode: questionCode, userCf: parseFloat(e) });
   }
   return (
-    <Card className="w-[380px]">
+    <Card
+      className="w-[380px] border-4 backdrop-blur-md bg-white/90"
+      style={{ borderColor: "#022090" }}
+    >
       <CardHeader>
         <CardTitle>{number + ". " + question}</CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardContent className="font-bold">
         {!SPECIALQUESTION.has(questionCode) ? (
           <RadioGroup onValueChange={handleValueChange}>
             <div className="flex gap-5 justify-around">
