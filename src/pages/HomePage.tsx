@@ -78,6 +78,11 @@ export default function HomePage() {
   const { allCFSorted, diagnose } = useInferenceEngine(answers);
   console.log(allCFSorted);
 
+  function backToMainMenu() {
+    setRawAnswers([]);
+    setSubmitted(false);
+  }
+
   const handleAnswer = useCallback(
     (answer: TRawAnswer) => {
       if (rawAnswers.length == 0) {
@@ -117,7 +122,7 @@ export default function HomePage() {
 
   return (
     <div
-      className="flex flex-col items-center pt-5 pb-10 max-h-svh overflow-auto"
+      className="flex flex-col items-center pt-5 pb-10 max-h-dvh overflow-auto"
       style={{
         backgroundImage: `url(${background})`,
         // backgroundRepeat: "repeat-x",
@@ -145,14 +150,23 @@ export default function HomePage() {
           </div>
           <Button
             onClick={handleSubmit}
-            className="w-60 text-md font-semibold "
+            className="w-60 text-md font-semibold hover:"
             style={{ backgroundColor: "#022090" }}
           >
             Submit
           </Button>
         </>
       ) : (
-        <div>{<Result allCF={allCFSorted} />}</div>
+        <div className="flex flex-col items-center gap-10">
+          <Result allCF={allCFSorted} />
+          <Button
+            onClick={backToMainMenu}
+            className="w-60 text-md font-semibold hover:"
+            style={{ backgroundColor: "#022090" }}
+          >
+            Diagnosa Lagi
+          </Button>
+        </div>
       )}
     </div>
   );
