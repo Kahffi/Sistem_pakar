@@ -5,7 +5,6 @@ import useRule from "@/hooks/useRule";
 import { Button } from "@/components/ui/button";
 import useInferenceEngine from "@/inferenceEngine";
 import Result from "@/components/Result";
-import background from "@/assets/bg.jpeg";
 
 export type TRawAnswer = {
   questionCode: string | number;
@@ -137,7 +136,7 @@ export default function HomePage() {
             <h1 className="-mt-4 font-bold text-3xl text-white">
               Prediksi Pasang Surut Air Laut dan Keamanan Pantai
             </h1>
-            <p className="mb-5 text-white font-semibold">
+            <p className="mb-5 text-white font-medium">
               Hallo, sebelum Anda memulai petualangan, pastikan Anda memeriksa
               prediksi pasang surut air laut dan informasi keamanan pantai
               melalui situs ini. Selamat berlibur dan nikmati hari Anda!
