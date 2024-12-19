@@ -122,19 +122,26 @@ export default function HomePage() {
 
   return (
     <div
-      className="flex flex-col items-center pt-5 pb-10 max-h-dvh overflow-auto"
-      style={{
-        backgroundImage: `url(${background})`,
-        // backgroundRepeat: "repeat-x",
-        backgroundSize: "cover",
-      }}
+      className="flex flex-col items-center pt-5 pb-10 max-h-dvh overflow-auto bg-gradient-to-b from-blue-500 to-orange-200"
+      style={
+        {
+          // backgroundImage: `url(${background})`,
+          // // backgroundRepeat: "repeat-x",
+          // backgroundSize: "cover",
+        }
+      }
     >
       {!submitted ? (
         <>
           <div className="flex flex-wrap items-center sm:flex-nowrap sm:flex-col gap-5 p-5 justify-around">
-            <h1 className="-mt-4 mb-5 font-bold text-3xl text-white">
-              Sistem Pakar Prediksi Pasang Surut Air Laut dan Keamanan Pantai
+            <h1 className="-mt-4 font-bold text-3xl text-white">
+              Prediksi Pasang Surut Air Laut dan Keamanan Pantai
             </h1>
+            <p className="mb-5 text-white font-semibold">
+              Hallo, sebelum Anda memulai petualangan, pastikan Anda memeriksa
+              prediksi pasang surut air laut dan informasi keamanan pantai
+              melalui situs ini. Selamat berlibur dan nikmati hari Anda!
+            </p>
             {QUESTIONS.map(([code, question], idx) => {
               return (
                 <QuestionItem

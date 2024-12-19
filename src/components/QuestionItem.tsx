@@ -43,9 +43,7 @@ export default function QuestionItem({
                   value="0.5"
                   id={questionCode + "cf-tidak-tahu"}
                 />
-                <label htmlFor={questionCode + "cf-tidak-tahu"}>
-                  Mungkin iya
-                </label>
+                <label htmlFor={questionCode + "cf-tidak-tahu"}>Mungkin</label>
               </div>
               <div className="flex flex-col gap-2 items-center justify-center">
                 <RadioGroupItem value="1" id={questionCode + "cf-tidak-iya"} />

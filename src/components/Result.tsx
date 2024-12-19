@@ -3,6 +3,7 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "./ui/card";
@@ -76,14 +77,14 @@ export default function Result({ allCF }: Props) {
         style={{ borderColor: "#022090" }}
       >
         <CardHeader>
-          <CardTitle>
-            {
-              "Kondisi Pantai"
-              // `${
-              //   PREDICTION_RESULT.get(filteredResult.bahaya[0])?.name
-              // }`
-            }
+          <CardTitle className="text-center">
+            <h3 className="font-semibold text-xl">{`${
+              PREDICTION_RESULT.get(filteredResult.bahaya[0])?.name
+            }`}</h3>
           </CardTitle>
+          <CardDescription className="-mt-4">
+            {decisions[0].description}
+          </CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col items-center gap-5">
           <p className="-mb-3">Tingkat Kepercayaan:</p>
@@ -98,16 +99,10 @@ export default function Result({ allCF }: Props) {
               )}
             </div>
           </div>
-          <h3 className="font-semibold text-xl">{`${
-            PREDICTION_RESULT.get(filteredResult.bahaya[0])?.name
-          }`}</h3>
-
-          <CardDescription className="-mt-4">
-            {decisions[0].description}
-          </CardDescription>
-
-          <p className="font-medium">{`${decisions[0].advice}`}</p>
         </CardContent>
+        <CardFooter>
+          <p>{`${decisions[0].advice}`}</p>
+        </CardFooter>
       </Card>
 
       <Card
@@ -115,11 +110,21 @@ export default function Result({ allCF }: Props) {
         style={{ borderColor: "#022090" }}
       >
         <CardHeader>
-          <CardTitle>Pasang/Surut Air Laut</CardTitle>
+          {/* Title resul */}
+          <CardTitle className="text-center">
+            <h3 className="font-semibold text-xl">{`${
+              PREDICTION_RESULT.get(filteredResult.pasangSurut[0])?.name
+            }`}</h3>
+          </CardTitle>
+          {/* Deskripsi kondisi secara umum */}
+          <CardDescription className="-mt-4">
+            {decisions[1].description}
+          </CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col items-center gap-5">
           <p className="-mb-3">Tingkat Kepercayaan:</p>
           <div className="flex justify-center p-1 bg-green-400 rounded-full drop-shadow-sm -mb-2">
+            {/* Indicator result */}
             <div className="flex justify-center items-center rounded-full bg-white border-gray-500 drop-shadow-lg min-w-28 min-h-28 p-3">
               {filteredResult && (
                 <p className="text-2xl font-semibold">
@@ -130,15 +135,11 @@ export default function Result({ allCF }: Props) {
               )}
             </div>
           </div>
-          <h3 className="font-semibold text-xl">{`${
-            PREDICTION_RESULT.get(filteredResult.pasangSurut[0])?.name
-          }`}</h3>
-          <CardDescription className="-mt-4">
-            {decisions[1].description}
-          </CardDescription>
-
-          <p>{`${decisions[1].advice}`}</p>
         </CardContent>
+        {/* Deskripsi spesifik kondisi */}
+        <CardFooter>
+          <p>{`${decisions[1].advice}`}</p>
+        </CardFooter>
       </Card>
     </div>
   );
