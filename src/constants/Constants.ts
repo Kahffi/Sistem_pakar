@@ -1,4 +1,4 @@
-type TQuestion = [string, string, TCategory];
+export type TQuestion = [string, string, TCategory];
 export const QUESTIONS: TQuestion[] = [
   ["S0", "Fase bulan saat ini", "fase bulan"],
   // ["G1", "Bulan Baru"],
@@ -37,7 +37,7 @@ export const QUESTIONS: TQuestion[] = [
   // ["G21", "Cuaca Berangin"],
 ];
 
-type TSpecialQuestionMapValue = {
+export type TSpecialQuestionMapValue = {
   code: string;
   statement: string;
 };
