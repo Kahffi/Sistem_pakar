@@ -2,7 +2,7 @@ import { QUESTIONS, TQuestion } from "@/constants/Constants";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import QuizQuestion from "../components/quiz/QuizQuestion";
-import useAnswer from "@/hooks/useAnswers";
+import AnswerContextProvider from "@/contexts/AnswerContextProvider";
 
 export default function Quiz() {
   const param = useParams().quizId;
@@ -11,7 +11,6 @@ export default function Quiz() {
   );
   const [questionNumber, setQuestionNumber] = useState<number | null>(null);
   const navigate = useNavigate();
-  const { answers, setAnswer } = useAnswer();
 
   //   get current question, and current question number
   useEffect(() => {
@@ -40,7 +39,7 @@ export default function Quiz() {
   }
 
   return (
-    <>
+    <AnswerContextProvider>
       {currentQuestion && (
         <div className="">
           {/* top bar */}
@@ -73,6 +72,6 @@ export default function Quiz() {
           </div>
         </div>
       )}
-    </>
+    </AnswerContextProvider>
   );
 }

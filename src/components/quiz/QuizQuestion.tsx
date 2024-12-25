@@ -12,17 +12,17 @@ export default function QuizQuestion({
   const options = useQuestionOption(questionId);
 
   return (
-    <div className="flex">
-      {/* question number */}
-      <div>{QUESTIONS.findIndex(([id]) => id === questionId) + 1}</div>
-
+    <div>
+      {/* question */}
+      <div className="text-xl">
+        <span>{`${
+          QUESTIONS.findIndex(([id]) => id === questionId) + 1
+        }. `}</span>
+        {question}
+      </div>
+      {/* options */}
       <div>
-        {/* question */}
-        <div>{question}</div>
-        {/* options */}
-        <div>
-          <QuestionOptions options={options} questionId={questionId} />
-        </div>
+        <QuestionOptions options={options} questionId={questionId} />
       </div>
     </div>
   );

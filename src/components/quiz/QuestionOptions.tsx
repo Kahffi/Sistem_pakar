@@ -4,6 +4,8 @@ import useQuestionOption, {
 } from "../../hooks/useQuestionOption";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { TSpecialQuestionMapValue } from "../../constants/Constants";
+import { useAnswerContext } from "@/contexts/AnswerContext";
+
 type Props = {
   questionId: string;
   options: ReturnType<typeof useQuestionOption>;
@@ -16,11 +18,22 @@ export default function QuestionOptions({ options, questionId }: Props) {
     if (Object.keys(options[0]).find((key) => key === "code")) return "special";
     return "normal";
   }, [options]);
+  const { answer, setAnswer } = useAnswerContext();
+  const lastValue = useMemo(() => {
+    return answer.find((ans) => ans.questionId === questionId)?.value;
+  }, [answer, questionId]);
+
+  console.log(lastValue);
+  console.log(`answer: ${answer}`);
 
   return (
     <div>
       {questionType && options && (
-        <RadioGroup key={`${questionId}`}>
+        <RadioGroup
+          key={`${questionId}`}
+          value={lastValue}
+          onValueChange={(val) => setAnswer(questionId, val)}
+        >
           {options.map((obj) => {
             let val: string;
             let label;
