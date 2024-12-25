@@ -1,5 +1,6 @@
-import { ReactNode, useCallback, useState } from "react";
+import { ReactNode, useCallback, useEffect, useMemo, useState } from "react";
 import { Answer, AnswerContext } from "./AnswerContext";
+import { QUESTIONS } from "@/constants/Constants";
 
 export default function AnswerContextProvider({
   children,
@@ -7,6 +8,12 @@ export default function AnswerContextProvider({
   children: ReactNode;
 }) {
   const [answers, setAnswersState] = useState<Answer[]>([]);
+
+  useEffect(() => {
+    const answerHistory = localStorage.getItem("answers");
+    if (!answerHistory) return;
+    setAnswersState(JSON.parse(answerHistory));
+  }, []);
 
   const setAnswer = useCallback((questionId: string, value: string) => {
     setAnswersState((prev) => {
@@ -17,9 +24,14 @@ export default function AnswerContextProvider({
       } else {
         newAns.push({ questionId: questionId, value: value });
       }
+      localStorage.setItem("answers", JSON.stringify(newAns));
       return newAns;
     });
   }, []);
+
+  const processedAnswer = useMemo(() => {
+    if (answers.length < QUESTIONS.length) return;
+  }, [answers]);
 
   return (
     <AnswerContext.Provider value={{ answer: answers, setAnswer: setAnswer }}>

@@ -41,7 +41,7 @@ export default function Quiz() {
   return (
     <AnswerContextProvider>
       {currentQuestion && (
-        <div className="">
+        <div className="min-h-dvh">
           {/* top bar */}
           <div></div>
           {/* main Content */}
@@ -49,7 +49,7 @@ export default function Quiz() {
             {/* question navigation */}
             <nav></nav>
             {/* question */}
-            <main className="w-full">
+            <main className="w-full flex flex-col gap-9">
               <QuizQuestion questionData={currentQuestion} />
               <div className="w-full flex justify-between">
                 <button

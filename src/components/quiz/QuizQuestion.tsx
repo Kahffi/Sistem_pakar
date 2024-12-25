@@ -12,7 +12,7 @@ export default function QuizQuestion({
   const options = useQuestionOption(questionId);
 
   return (
-    <div>
+    <div className="flex flex-col gap-5">
       {/* question */}
       <div className="text-xl">
         <span>{`${
