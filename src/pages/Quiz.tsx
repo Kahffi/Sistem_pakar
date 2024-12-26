@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import QuizQuestion from "../components/quiz/QuizQuestion";
 import AnswerContextProvider from "@/contexts/AnswerContextProvider";
+import QuestionNav from "@/components/quiz/QuestionNav";
 
 export default function Quiz() {
   const param = useParams().quizId;
@@ -45,9 +46,12 @@ export default function Quiz() {
           {/* top bar */}
           <div></div>
           {/* main Content */}
-          <div className="flex flex-wrap">
+          <div className="lg:flex">
             {/* question navigation */}
-            <nav></nav>
+            <QuestionNav
+              currentQuestId={currentQuestion[0]}
+              key={`${currentQuestion[0]}-nav`}
+            />
             {/* question */}
             <main className="w-full flex flex-col gap-9">
               <QuizQuestion questionData={currentQuestion} />
