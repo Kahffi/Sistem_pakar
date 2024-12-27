@@ -1,9 +1,10 @@
 import { QUESTIONS, TQuestion } from "@/constants/Constants";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import QuizQuestion from "../components/quiz/QuizQuestion";
 import AnswerContextProvider from "@/contexts/AnswerContextProvider";
 import QuestionNav from "@/components/quiz/QuestionNav";
+import { useAnswerContext } from "@/contexts/AnswerContext";
 
 export default function Quiz() {
   const param = useParams().quizId;
@@ -12,6 +13,15 @@ export default function Quiz() {
   );
   const [questionNumber, setQuestionNumber] = useState<number | null>(null);
   const navigate = useNavigate();
+  const { answer } = useAnswerContext();
+  const isQuisCompleted = useMemo(() => {
+    if (!currentQuestion) return;
+
+    return answer.length !== QUESTIONS.length &&
+      currentQuestion[0] === QUESTIONS[QUESTIONS.length - 1][0]
+      ? { disabled: true }
+      : null;
+  }, [answer, currentQuestion]);
 
   //   get current question, and current question number
   useEffect(() => {
@@ -40,34 +50,37 @@ export default function Quiz() {
   }
 
   return (
-    <AnswerContextProvider>
+    <>
       {currentQuestion && (
-        <div className="min-h-dvh">
+        <div className="min-h-dvh flex flex-col p-3">
           {/* top bar */}
           <div></div>
           {/* main Content */}
-          <div className="lg:flex">
+          <div className="flex flex-col lg:flex-row gap-5 h-full flex-1">
             {/* question navigation */}
-            <QuestionNav
-              currentQuestId={currentQuestion[0]}
-              key={`${currentQuestion[0]}-nav`}
-            />
+            <div className="min-h-full border rounded-lg">
+              <QuestionNav
+                currentQuestId={currentQuestion[0]}
+                key={`${currentQuestion[0]}-nav`}
+              />
+            </div>
             {/* question */}
-            <main className="w-full flex flex-col gap-9">
+            <main className="flex flex-col gap-28 flex-1">
               <QuizQuestion questionData={currentQuestion} />
               <div className="w-full flex justify-between">
                 <button
                   {...(questionNumber === 1 ? { disabled: true } : null)}
                   type="button"
                   onClick={() => handleQuestionNavigation("prev")}
-                  className="px-3 py-2 border rounded-md disabled:opacity-50"
+                  className="px-3 py-2 border rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Sebelumnya
                 </button>
                 <button
+                  {...(isQuisCompleted ? { disabled: true } : null)}
                   type="button"
                   onClick={() => handleQuestionNavigation("next")}
-                  className="px-3 py-2 border rounded-md"
+                  className="px-3 py-2 border rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Selanjutnya
                 </button>
@@ -76,6 +89,6 @@ export default function Quiz() {
           </div>
         </div>
       )}
-    </AnswerContextProvider>
+    </>
   );
 }

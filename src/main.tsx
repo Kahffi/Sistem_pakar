@@ -5,10 +5,18 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import HomePage from "./pages/HomePage.tsx";
 import Quiz from "./pages/Quiz.tsx";
 import ErrorPage from "./pages/ErrorPage.tsx";
+import AnswerContextProvider from "./contexts/AnswerContextProvider.tsx";
 
 const router = createBrowserRouter([
   { path: "/", element: <HomePage />, errorElement: <ErrorPage /> },
-  { path: "quiz/:quizId", element: <Quiz /> },
+  {
+    path: "quiz/:quizId",
+    element: (
+      <AnswerContextProvider>
+        <Quiz />
+      </AnswerContextProvider>
+    ),
+  },
   // { path: "result", element: <Result /> },
 ]);
 
