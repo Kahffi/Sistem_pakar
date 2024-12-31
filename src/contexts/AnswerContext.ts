@@ -1,3 +1,4 @@
+import { TAnswer } from "@/pages/HomePage";
 import { createContext, useContext } from "react";
 export type Answer = {
   questionId: string;
@@ -7,6 +8,7 @@ export type Answer = {
 export type AnswerContext = {
   answer: Answer[];
   setAnswer: (questionId: string, value: string) => void;
+  processedAnswer: TAnswer[];
 };
 
 export const AnswerContext = createContext<null | AnswerContext>(null);

@@ -79,7 +79,7 @@ SPECIALQUESTION.set("S3", [
 //   ["A5", "Berbahaya Beraktivitas di Pantai"],
 // ]);
 
-type TPredictionResult = {
+export type TPredictionResult = {
   name: string;
   description: string;
   advice: string[];

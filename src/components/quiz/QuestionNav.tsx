@@ -1,7 +1,7 @@
 import { QUESTIONS } from "@/constants/Constants";
 import NavItem from "./NavItem";
 import { useAnswerContext } from "@/contexts/AnswerContext";
-import { useCallback, useMemo } from "react";
+import { useCallback } from "react";
 
 export default function QuestionNav({
   currentQuestId,
@@ -24,7 +24,7 @@ export default function QuestionNav({
         return (
           <NavItem
             num={idx + 1}
-            key={currentQuestId}
+            key={`${currentQuestId}-${idx}`}
             isActive={questId === currentQuestId ? true : false}
             answered={hasAnswered(questId)}
           />

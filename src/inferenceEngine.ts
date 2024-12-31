@@ -11,8 +11,6 @@ function useInferenceEngine(userData: TAnswer[]) {
 
     const newFacts: string[] = [];
     userData.forEach((answer) => {
-      // if (((answer as TRawAnswer).userCf as number) > 0) {
-      // }
       newFacts.push(answer.questionCode);
     });
 

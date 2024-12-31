@@ -1,8 +1,7 @@
 import { QUESTIONS, TQuestion } from "@/constants/Constants";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import QuizQuestion from "../components/quiz/QuizQuestion";
-import AnswerContextProvider from "@/contexts/AnswerContextProvider";
 import QuestionNav from "@/components/quiz/QuestionNav";
 import { useAnswerContext } from "@/contexts/AnswerContext";
 
@@ -14,14 +13,10 @@ export default function Quiz() {
   const [questionNumber, setQuestionNumber] = useState<number | null>(null);
   const navigate = useNavigate();
   const { answer } = useAnswerContext();
-  const isQuisCompleted = useMemo(() => {
-    if (!currentQuestion) return;
-
-    return answer.length !== QUESTIONS.length &&
-      currentQuestion[0] === QUESTIONS[QUESTIONS.length - 1][0]
-      ? { disabled: true }
-      : null;
-  }, [answer, currentQuestion]);
+  const isLastQuestion = !currentQuestion
+    ? false
+    : currentQuestion[0] === QUESTIONS[QUESTIONS.length - 1][0];
+  const isQuizCompleted = answer.length === QUESTIONS.length;
 
   //   get current question, and current question number
   useEffect(() => {
@@ -39,8 +34,9 @@ export default function Quiz() {
 
   function handleQuestionNavigation(goto: "next" | "prev") {
     let destination = "/quiz/";
-    if (goto === "next" && questionNumber! >= QUESTIONS.length) {
+    if (goto === "next" && isLastQuestion) {
       destination = "/result";
+      handleSubmit();
     } else if (goto == "next") {
       destination = `${destination}${QUESTIONS[questionNumber! - 1 + 1][0]}`;
     } else {
@@ -48,6 +44,8 @@ export default function Quiz() {
     }
     navigate(destination);
   }
+
+  function handleSubmit() {}
 
   return (
     <>
@@ -77,12 +75,14 @@ export default function Quiz() {
                   Sebelumnya
                 </button>
                 <button
-                  {...(isQuisCompleted ? { disabled: true } : null)}
+                  {...(isQuizCompleted
+                    ? { disabled: false }
+                    : { disabled: true })}
                   type="button"
                   onClick={() => handleQuestionNavigation("next")}
                   className="px-3 py-2 border rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  Selanjutnya
+                  {isLastQuestion ? "Selesai" : "Selanjutnya"}
                 </button>
               </div>
             </main>

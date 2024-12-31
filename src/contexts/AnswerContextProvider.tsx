@@ -1,6 +1,7 @@
 import { ReactNode, useCallback, useEffect, useMemo, useState } from "react";
 import { Answer, AnswerContext } from "./AnswerContext";
-import { QUESTIONS } from "@/constants/Constants";
+import { QUESTIONS, SPECIALQUESTION } from "@/constants/Constants";
+import { TAnswer } from "@/pages/HomePage";
 
 export default function AnswerContextProvider({
   children,
@@ -30,11 +31,26 @@ export default function AnswerContextProvider({
   }, []);
 
   const processedAnswer = useMemo(() => {
-    if (answers.length < QUESTIONS.length) return;
+    if (answers.length < QUESTIONS.length) return [];
+    const processed: TAnswer[] = answers.map((ans) => {
+      if (SPECIALQUESTION.has(ans.questionId))
+        return { questionCode: ans.value, userCf: 1 };
+      return {
+        questionCode: ans.questionId,
+        userCf: parseFloat(ans.value),
+      };
+    });
+    return processed;
   }, [answers]);
 
   return (
-    <AnswerContext.Provider value={{ answer: answers, setAnswer: setAnswer }}>
+    <AnswerContext.Provider
+      value={{
+        answer: answers,
+        setAnswer: setAnswer,
+        processedAnswer: processedAnswer,
+      }}
+    >
       {children}
     </AnswerContext.Provider>
   );

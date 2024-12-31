@@ -10,6 +10,7 @@ export default function useRule() {
   const [rules, setRules] = useState<Rule[]>([]);
 
   useEffect(() => {
+    console.log("me?");
     async function fetchKB() {
       try {
         const res = await fetch(KB);

@@ -7,7 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "./ui/card";
-import { PREDICTION_RESULT } from "@/constants/Constants";
+import { PREDICTION_RESULT, TPredictionResult } from "@/constants/Constants";
 
 type Props = {
   allCF: [string, number][];
@@ -22,7 +22,7 @@ export default function Result({ allCF }: Props) {
     });
     for (const result of filtered) {
       const identifier = parseInt(result[0].slice(1));
-      if (identifier <= 2 && identifier != 0) {
+      if (identifier <= 2 && identifier >= 0) {
         pasangSurut.push(result);
       } else if (identifier <= 5) {
         bahaya.push(result);
@@ -49,11 +49,23 @@ export default function Result({ allCF }: Props) {
   }, []);
 
   const decisions = useMemo(() => {
+    if (!filteredResult) return;
     // decisions: [levelBahaya, pasangSurut];
     const decisions: TDecision[] = [];
+    let pasangSurut: TPredictionResult;
+    let levelBahaya: TPredictionResult;
 
-    const levelBahaya = PREDICTION_RESULT.get(filteredResult.bahaya[0])!;
-    const pasangSurut = PREDICTION_RESULT.get(filteredResult.pasangSurut[0])!;
+    if (filteredResult.bahaya.length > 0) {
+      levelBahaya = PREDICTION_RESULT.get(filteredResult.bahaya[0])!;
+    } else {
+      levelBahaya = { name: "error", description: "error", advice: ["error"] };
+    }
+
+    if (filteredResult.pasangSurut.length > 0) {
+      pasangSurut = PREDICTION_RESULT.get(filteredResult.pasangSurut[0])!;
+    } else {
+      pasangSurut = { name: "error", description: "error", advice: ["error"] };
+    }
 
     decisions.push({
       description: levelBahaya.description,
@@ -83,7 +95,7 @@ export default function Result({ allCF }: Props) {
             }`}</h3>
           </CardTitle>
           <CardDescription className="-mt-4">
-            {decisions[0].description}
+            {decisions && decisions[0].description}
           </CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col items-center gap-5">
@@ -101,7 +113,7 @@ export default function Result({ allCF }: Props) {
           </div>
         </CardContent>
         <CardFooter>
-          <p>{`${decisions[0].advice}`}</p>
+          {decisions && <p>{`${decisions[0].advice}`}</p>}
         </CardFooter>
       </Card>
 
@@ -118,7 +130,7 @@ export default function Result({ allCF }: Props) {
           </CardTitle>
           {/* Deskripsi kondisi secara umum */}
           <CardDescription className="-mt-4">
-            {decisions[1].description}
+            {decisions && decisions[1].description}
           </CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col items-center gap-5">
@@ -138,7 +150,7 @@ export default function Result({ allCF }: Props) {
         </CardContent>
         {/* Deskripsi spesifik kondisi */}
         <CardFooter>
-          <p>{`${decisions[1].advice}`}</p>
+          <p>{`${decisions && decisions[1].advice}`}</p>
         </CardFooter>
       </Card>
     </div>
