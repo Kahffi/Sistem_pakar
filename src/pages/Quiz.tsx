@@ -1,5 +1,5 @@
 import { QUESTIONS, TQuestion } from "@/constants/Constants";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import QuizQuestion from "../components/quiz/QuizQuestion";
 import QuestionNav from "@/components/quiz/QuestionNav";
@@ -13,9 +13,10 @@ export default function Quiz() {
   const [questionNumber, setQuestionNumber] = useState<number | null>(null);
   const navigate = useNavigate();
   const { answer } = useAnswerContext();
-  const isLastQuestion = !currentQuestion
-    ? false
-    : currentQuestion[0] === QUESTIONS[QUESTIONS.length - 1][0];
+  const isLastQuestion = useMemo(() => {
+    if (!currentQuestion) return false;
+    return currentQuestion[0] === QUESTIONS[QUESTIONS.length - 1][0];
+  }, [currentQuestion]);
   const isQuizCompleted = answer.length === QUESTIONS.length;
 
   //   get current question, and current question number
@@ -31,6 +32,9 @@ export default function Quiz() {
     setQuestionNumber(questionIdx + 1);
     setCurrentQuestion(QUESTIONS[questionIdx]);
   }, [param]);
+
+  console.log(isLastQuestion, "is Last question");
+  console.log(isLastQuestion, "is Last question");
 
   function handleQuestionNavigation(goto: "next" | "prev") {
     let destination = "/quiz/";
@@ -51,8 +55,6 @@ export default function Quiz() {
     <>
       {currentQuestion && (
         <div className="min-h-dvh flex flex-col p-3">
-          {/* top bar */}
-          <div></div>
           {/* main Content */}
           <div className="flex flex-col lg:flex-row gap-5 h-full flex-1">
             {/* question navigation */}
@@ -63,8 +65,9 @@ export default function Quiz() {
               />
             </div>
             {/* question */}
-            <main className="flex flex-col gap-28 flex-1">
+            <main className="flex flex-col gap-28 flex-1 border rounded-lg p-5">
               <QuizQuestion questionData={currentQuestion} />
+              {/* button group */}
               <div className="w-full flex justify-between">
                 <button
                   {...(questionNumber === 1 ? { disabled: true } : null)}
@@ -75,9 +78,9 @@ export default function Quiz() {
                   Sebelumnya
                 </button>
                 <button
-                  {...(isQuizCompleted
-                    ? { disabled: false }
-                    : { disabled: true })}
+                  {...(!isQuizCompleted && isLastQuestion
+                    ? { disabled: true }
+                    : { disabled: false })}
                   type="button"
                   onClick={() => handleQuestionNavigation("next")}
                   className="px-3 py-2 border rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
