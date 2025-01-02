@@ -211,7 +211,7 @@ export const PREDICTION_RESULT = new Map<string, TPredictionResult>([
 new Map<string, object>();
 
 export type Evidences = { [key: string]: { [key: string]: number } };
-export const evidences = {
+export const evidences: Evidences = {
   G1: { A2: 0.7 },
   G2: { A2: 0.8 },
   G3: { A1: 0.6 },
@@ -224,10 +224,10 @@ export const evidences = {
   G10: { A2: 0.2 },
   G11: { A2: 0.2, A4: 0.2 },
   G12: { A1: 0.2, A3: 0.2 },
-  G13: { A2: 0.6, A5: 0.6 },
-  G14: { A1: 0.6, A4: 0.6 },
-  G15: { A1: 0.6, A3: 0.6 },
-  G16: { A2: 0.6, A4: 0.6 },
+  G13: { A2: 0.4, A5: 0.4 },
+  G14: { A1: 0.4, A4: 0.4 },
+  G15: { A1: 0.4, A3: 0.4 },
+  G16: { A2: 0.4, A4: 0.4 },
   G17: { A2: 0.4 },
   G18: { A1: 0.4 },
 };

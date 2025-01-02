@@ -9,41 +9,39 @@ export default function useDempsterShafer(dstInput: DstInput) {
     m2: { [key: string]: number }
   ) {
     const combined: { [key: string]: number } = {};
-    const conflict = 0;
+    let conflict = 0;
 
-    for (const key1 in m1) {
-      for (const key2 in m2) {
-        const intersection = key1
+    for (const a in m1) {
+      for (const b in m2) {
+        const intersection = a
           .split(",")
-          .filter((v) => key2.split(",").includes(v))
+          .filter((val) => b.split(",").includes(val))
           .join(",");
 
         if (intersection) {
-          // Jika ada irisan, tambahkan ke hipotesis yang sesuai
           combined[intersection] =
-            (combined[intersection] || 0) + m1[key1] * m2[key2];
+            (combined[intersection] || 0) + m1[a] * m2[b];
         } else {
-          // Jika tidak ada irisan, tambahkan ke Theta
-          combined["Theta"] = (combined["Theta"] || 0) + m1[key1] * m2[key2];
+          conflict += m1[a] * m2[b];
         }
       }
     }
 
-    // Normalisasi hasil akhir
+    // Normalisasi berdasarkan konflik
     const normalizationFactor = 1 - conflict;
     if (normalizationFactor > 0) {
       for (const key in combined) {
         combined[key] /= normalizationFactor;
       }
     } else {
-      // Semua konflik, semua massa masuk ke Theta
+      // Jika seluruhnya konflik, hasilkan hanya ketidakpastian
       combined["Theta"] = 1;
     }
 
     return combined;
   }
 
-  // Fungsi untuk menggabungkan beberapa evidence
+  // Fungsi untuk menggabungkan beberapa massa
   function combineMultipleEvidences(evidences: Evidences): {
     [key: string]: number;
   } {
@@ -98,9 +96,6 @@ export default function useDempsterShafer(dstInput: DstInput) {
         .filter((k) => k.split(",").some((v) => h.split(",").includes(v)))
         .reduce((sum, k) => sum + combinedMass[k], 0);
     }
-
-    console.log("Belief:", belief);
-    console.log("Plausibility:", plausibility);
 
     return { belief, plausibility };
   }

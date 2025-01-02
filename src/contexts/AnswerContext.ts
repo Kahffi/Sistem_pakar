@@ -1,4 +1,4 @@
-import { TAnswer } from "@/pages/HomePage";
+import { TAnswer } from "@/pages/HomePages";
 import { createContext, useContext } from "react";
 export type Answer = {
   questionId: string;

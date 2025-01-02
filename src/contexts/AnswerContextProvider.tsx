@@ -1,7 +1,7 @@
 import { ReactNode, useCallback, useEffect, useMemo, useState } from "react";
 import { Answer, AnswerContext } from "./AnswerContext";
 import { QUESTIONS, SPECIALQUESTION } from "@/constants/Constants";
-import { TAnswer } from "@/pages/HomePage";
+import { TAnswer } from "@/pages/HomePages";
 
 export default function AnswerContextProvider({
   children,
