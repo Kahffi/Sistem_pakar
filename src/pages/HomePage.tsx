@@ -1,3 +1,4 @@
+import useDempsterShafer from "@/hooks/useDempsterShafer";
 import { useNavigate } from "react-router-dom";
 
 export default function HomePage() {
@@ -5,6 +6,9 @@ export default function HomePage() {
   function startQuiz() {
     navigate("/quiz/S0");
   }
+  const { belief, plausibility } = useDempsterShafer(["G27", "G24"]);
+  console.log(belief, "belief");
+  console.log(plausibility, "plau");
 
   return (
     <div>

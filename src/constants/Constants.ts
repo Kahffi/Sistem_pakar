@@ -1,5 +1,6 @@
 export type TQuestion = [string, string, TCategory];
-export const QUESTIONS: TQuestion[] = [
+
+const oldQuestion: TQuestion[] = [
   ["S0", "Fase bulan saat ini", "fase bulan"],
   // ["G1", "Bulan Baru"],
   // ["G2", "Bulan Purnama"],
@@ -37,6 +38,47 @@ export const QUESTIONS: TQuestion[] = [
   // ["G21", "Cuaca Berangin"],
 ];
 
+const newQuestion: TQuestion[] = [
+  ["S0", "Fase bulan saat ini", "fase bulan"],
+  // ["G1", "Bulan Baru"],
+  // ["G2", "Bulan Purnama"],
+  // ["G3", "Bulan Perbani"],
+  // ["G4", "Bulan Cembung"],
+  // ["G5", "Bulan Sabit"],
+  ["G6", "Arah angin ditunjukkan oleh arah hanyut asap", "angin"],
+  [
+    "G7",
+    "Daun dan ranting kecil tetap bergerak, angin membentangkan bendera ringan",
+    "angin",
+  ],
+  [
+    "G8",
+    "Pohon kecil mulai bergoyang, timbul bentuk gelombang kecil pada perairan pendalaman",
+    "angin",
+  ],
+  // ["G9", "kepting", "angin"],
+  // [
+  //   "G10",
+  //   "kepiting",
+  //   "angin",
+  // ],
+  [
+    "G11",
+    "Cabang besar bergerak, kawat telpon kendengaran berdesing, sulit memakai payung",
+    "angin",
+  ],
+
+  ["S1", "Kepiting berada di pesisir pantai", "perilaku hewan"],
+  // ["G13", "Kepiting tidak berada di pesisir pantai"],
+  ["S2", "Burung bertengger", "perilaku hewan"],
+  // ["G15", "Kepiting tidak menggores pasir"],
+  ["S3", "Bagaimana curah hujan belakangan ini?", "perilaku hewan"],
+  ["S4", "Bagaimana kondisi cuaca saat ini?", "perilaku hewan"],
+  ["S5", "Bagaimana kondisi arus saat ini?", "perilaku hewan"],
+];
+
+export const QUESTIONS: TQuestion[] = newQuestion;
+
 export type TSpecialQuestionMapValue = {
   code: string;
   statement: string;
@@ -59,16 +101,24 @@ SPECIALQUESTION.set("S0", [
   { code: "G5", statement: "Bulan sabit" },
 ]);
 SPECIALQUESTION.set("S1", [
-  { code: "G12", statement: "Iya" },
-  { code: "G13", statement: "Tidak" },
+  { code: "G9", statement: "Iya" },
+  { code: "10", statement: "Tidak" },
 ]);
 SPECIALQUESTION.set("S2", [
-  { code: "G14", statement: "Iya" },
-  { code: "G15", statement: "Tidak" },
+  { code: "G11", statement: "Iya" },
+  { code: "G12", statement: "Tidak" },
 ]);
 SPECIALQUESTION.set("S3", [
-  { code: "G16", statement: "Iya" },
-  { code: "G17", statement: "Tidak" },
+  { code: "G13", statement: "Curah hujan tinggi" },
+  { code: "G14", statement: "Curah hujan rendah" },
+]);
+SPECIALQUESTION.set("S4", [
+  { code: "G15", statement: "Cuaca cerah" },
+  { code: "G16", statement: "Cuaca berangin" },
+]);
+SPECIALQUESTION.set("S5", [
+  { code: "G17", statement: "Arus air mendekati pesisir" },
+  { code: "G18", statement: "Arus air menjauhi pesisir" },
 ]);
 
 // export const PREDICTION_RESULT = new Map([
@@ -160,6 +210,7 @@ export const PREDICTION_RESULT = new Map<string, TPredictionResult>([
 
 new Map<string, object>();
 
+export type Evidences = { [key: string]: { [key: string]: number } };
 export const evidences = {
   G1: { A2: 0.7 },
   G2: { A2: 0.8 },
@@ -171,18 +222,12 @@ export const evidences = {
   G8: { A5: 0.8 },
   G9: { A1: 0.2 },
   G10: { A2: 0.2 },
-  G11: { A4: 0.2 },
-  G12: { A2: 0.2 },
-  G13: { A3: 0.2 },
-  G14: { A1: 0.2 },
-  G15: { A2: 0.6 },
-  G16: { A5: 0.8 },
-  G17: { A1: 0.6 },
-  G18: { A4: 0.8 },
-  G19: { A1: 0.6 },
-  G20: { A3: 0.8 },
-  G21: { A2: 0.6 },
-  G22: { A4: 0.8 },
-  G23: { A2: 0.4 },
-  G24: { A1: 0.4 },
+  G11: { A2: 0.2, A4: 0.2 },
+  G12: { A1: 0.2, A3: 0.2 },
+  G13: { A2: 0.6, A5: 0.6 },
+  G14: { A1: 0.6, A4: 0.6 },
+  G15: { A1: 0.6, A3: 0.6 },
+  G16: { A2: 0.6, A4: 0.6 },
+  G17: { A2: 0.4 },
+  G18: { A1: 0.4 },
 };

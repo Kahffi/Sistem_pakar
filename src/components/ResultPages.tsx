@@ -12,6 +12,8 @@ import {
 } from "./ui/card";
 import { PREDICTION_RESULT } from "@/constants/Constants";
 import { useNavigate } from "react-router-dom";
+import useDempsterShafer from "@/hooks/useDempsterShafer";
+import { calculateBelief, evidences } from "@/dempsterShafer";
 
 export default function ResultPages() {
   const { processedAnswer } = useAnswerContext();
@@ -19,6 +21,10 @@ export default function ResultPages() {
   const { decisions, filteredResult } = useGenerateDecission(
     result?.sortedCf,
     result?.facts
+  );
+
+  console.log(
+    calculateBelief(evidences, ["G1", "G6", "G9", "G12", "G13", "G16", "G18"])
   );
   const navigate = useNavigate();
 
