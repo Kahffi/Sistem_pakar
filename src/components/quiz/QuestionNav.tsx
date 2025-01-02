@@ -19,7 +19,7 @@ export default function QuestionNav({
   );
 
   return (
-    <div className="flex flex-wrap lg:grid lg:grid-cols-5 lg:grid-flow-row gap-2 p-3 rounded-lg h-fit">
+    <div className="flex flex-wrap lg:grid lg:grid-cols-5 lg:grid-flow-row gap-2 p-3 rounded-lg h-fit font-semibold">
       {QUESTIONS.map(([questId], idx) => {
         return (
           <NavItem

@@ -30,6 +30,7 @@ export const QUESTIONS: TQuestion[] = [
   ["S2", "Kepiting menggores pasir", "perilaku hewan"],
   // ["G15", "Kepiting tidak menggores pasir"],
   ["S3", "Burung bertengger", "perilaku hewan"],
+  ["S4", "Kemana arah arus air?", "angin"],
   // ["G17", "Burung Tidak bertengger"],
   // ["G18", "Curah Hujan Tinggi"],
   // ["G19", "Curah Hujan Rendah"],
@@ -69,6 +70,10 @@ SPECIALQUESTION.set("S2", [
 SPECIALQUESTION.set("S3", [
   { code: "G16", statement: "Iya" },
   { code: "G17", statement: "Tidak" },
+]);
+SPECIALQUESTION.set("S4", [
+  { code: "G22", statement: "Mendekati pesisir" },
+  { code: "G23", statement: "Menjauhi pesisir" },
 ]);
 
 // export const PREDICTION_RESULT = new Map([

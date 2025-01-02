@@ -52,6 +52,7 @@ export default function HomePage() {
             pesisir.
           </p>
           <button
+            onClick={startQuiz}
             type="button"
             className="p-3 mt-4 w-40 bg-orange-500 text-white font-semibold rounded-full"
           >

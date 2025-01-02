@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import QuizQuestion from "../components/quiz/QuizQuestion";
 import QuestionNav from "@/components/quiz/QuestionNav";
 import { useAnswerContext } from "@/contexts/AnswerContext";
+import bgBeach from "@/assets/bg-beach1.jpg";
 
 export default function Quiz() {
   const param = useParams().quizId;
@@ -54,18 +55,22 @@ export default function Quiz() {
   return (
     <>
       {currentQuestion && (
-        <div className="min-h-dvh flex flex-col p-3">
+        <div className="relative min-h-dvh flex flex-col p-3 bg-cover ">
+          <div
+            className="h-full w-full absolute top-0 bg-cover bg-no-repeat blur z-0"
+            style={{ backgroundImage: `url(${bgBeach})` }}
+          ></div>
           {/* main Content */}
-          <div className="flex flex-col lg:flex-row gap-5 h-full flex-1">
+          <div className="flex flex-col lg:flex-row gap-5 h-full flex-1 z-10">
             {/* question navigation */}
-            <div className="min-h-full border rounded-lg">
+            <div className="min-h-full border rounded-lg bg-white/40 backdrop-blur-md">
               <QuestionNav
                 currentQuestId={currentQuestion[0]}
                 key={`${currentQuestion[0]}-nav`}
               />
             </div>
             {/* question */}
-            <main className="flex flex-col gap-28 flex-1 border rounded-lg p-5">
+            <main className="flex flex-col gap-28 flex-1 border rounded-lg p-5 bg-white/40 backdrop-blur-md">
               <QuizQuestion questionData={currentQuestion} />
               {/* button group */}
               <div className="w-full flex justify-between">
@@ -73,7 +78,7 @@ export default function Quiz() {
                   {...(questionNumber === 1 ? { disabled: true } : null)}
                   type="button"
                   onClick={() => handleQuestionNavigation("prev")}
-                  className="px-3 py-2 border rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="px-3 py-2 border rounded-md disabled:opacity-50 disabled:cursor-not-allowed border-gray-600"
                 >
                   Sebelumnya
                 </button>
@@ -83,7 +88,7 @@ export default function Quiz() {
                     : { disabled: false })}
                   type="button"
                   onClick={() => handleQuestionNavigation("next")}
-                  className="px-3 py-2 border rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="px-3 py-2 border rounded-md disabled:opacity-50 disabled:cursor-not-allowed border-gray-600"
                 >
                   {isLastQuestion ? "Selesai" : "Selanjutnya"}
                 </button>

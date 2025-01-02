@@ -1,4 +1,4 @@
-import { TAnswer } from "@/pages/HomePage";
+import { TAnswer } from "@/pages/HomePages";
 import { useMemo } from "react";
 import useRule from "./useRule";
 

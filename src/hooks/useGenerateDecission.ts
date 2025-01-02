@@ -2,8 +2,7 @@ import { PREDICTION_RESULT, TPredictionResult } from "@/constants/Constants";
 import { useCallback, useMemo } from "react";
 
 export default function useGenerateDecission(
-  sortedCf: [string, number][] | undefined,
-  facts: Set<string> | undefined
+  sortedCf: [string, number][] | undefined
 ) {
   const decideAdvice = useCallback((certaintyFactor: number) => {
     if (certaintyFactor < 0.3) {

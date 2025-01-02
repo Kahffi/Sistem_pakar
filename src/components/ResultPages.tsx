@@ -12,24 +12,43 @@ import {
 } from "./ui/card";
 import { PREDICTION_RESULT } from "@/constants/Constants";
 import { useNavigate } from "react-router-dom";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+
+import bgBeach from "@/assets/bg-beach1.jpg";
 
 export default function ResultPages() {
   const { processedAnswer } = useAnswerContext();
   const { result } = useInferenceEngine(processedAnswer);
-  const { decisions, filteredResult } = useGenerateDecission(
-    result?.sortedCf,
-    result?.facts
-  );
+  const { decisions, filteredResult } = useGenerateDecission(result?.sortedCf);
   const navigate = useNavigate();
 
   function handleReAttempt() {
-    navigate("/quiz/S0");
+    localStorage.removeItem("answers");
+    navigate("/");
   }
 
+  const factsString = (facts: Set<string>) => {
+    let str = "";
+    facts.forEach((fact) => {
+      str = str + `${fact} `;
+    });
+    return str;
+  };
+  console.log(result?.sortedCf, result?.facts);
+
   return (
-    <div className="flex flex-col items-center gap-14 pb-10">
+    <div className="relative flex flex-col items-center gap-14 pb-10 bg-cover">
+      <div
+        className="h-full w-full absolute top-0 bg-cover bg-no-repeat blur z-0"
+        style={{ backgroundImage: `url(${bgBeach})` }}
+      ></div>
       {decisions && filteredResult && (
-        <div className="flex flex-col gap-10">
+        <div className="flex flex-col gap-10 z-10">
           <h1 className="font-bold text-3xl text-white text-center">
             Hasil Diagnosis
           </h1>
@@ -102,14 +121,28 @@ export default function ResultPages() {
               <p>{`${decisions && decisions[1].advice}`}</p>
             </CardFooter>
           </Card>
+          <Accordion
+            type="single"
+            collapsible
+            className="w-full bg-white/50 backdrop-blur-lg p-2 rounded-lg"
+          >
+            <AccordionItem value="item-1">
+              <AccordionTrigger className="text-lg font-bold">
+                Lihat Fakta yang Diperoleh
+              </AccordionTrigger>
+              <AccordionContent className="text-base">
+                {factsString(result?.facts)}
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
         </div>
       )}
       <button
         type="button"
         onClick={handleReAttempt}
-        className="text-white p-3 w-60 rounded-md bg-blue-700 hover:bg-blue-600 font-semibold"
+        className="text-white p-3 w-60 rounded-md bg-blue-700 hover:bg-blue-600 font-semibold z-10"
       >
-        Ulangi Quiz
+        Kembali ke Beranda
       </button>
     </div>
   );
