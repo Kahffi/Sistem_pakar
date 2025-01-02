@@ -1,179 +1,121 @@
-import { QUESTIONS, SPECIALQUESTION } from "../constants/Constants";
-import QuestionItem from "@/components/QuestionItem";
-import { useCallback, useMemo, useState } from "react";
-import useRule from "@/hooks/useRule";
-import { Button } from "@/components/ui/button";
-import useInferenceEngine from "@/inferenceEngine";
-import Result from "@/components/Result";
-
-export type TRawAnswer = {
-  questionCode: string | number;
-  userCf: number | string;
-};
-
-export type TAnswer = {
-  questionCode: string;
-  userCf: number;
-};
-
-// const testData: TAnswer[] = [
-//   {
-//     questionCode: "G1",
-//     userCf: 1,
-//   },
-//   {
-//     questionCode: "G6",
-//     userCf: 1,
-//   },
-//   {
-//     questionCode: "G7",
-//     userCf: 0,
-//   },
-//   {
-//     questionCode: "G8",
-//     userCf: 1,
-//   },
-//   {
-//     questionCode: "G9",
-//     userCf: 0.5,
-//   },
-//   {
-//     questionCode: "G10",
-//     userCf: 0.5,
-//   },
-//   {
-//     questionCode: "G11",
-//     userCf: 1,
-//   },
-//   {
-//     questionCode: "G12",
-//     userCf: 1,
-//   },
-//   {
-//     questionCode: "G14",
-//     userCf: 1,
-//   },
-//   {
-//     questionCode: "G16",
-//     userCf: 1,
-//   },
-// ];
+import { useNavigate } from "react-router-dom";
 
 export default function HomePage() {
-  const [rawAnswers, setRawAnswers] = useState<TRawAnswer[]>([]);
-  const [submitted, setSubmitted] = useState(false);
-  const { rules } = useRule();
-
-  const answers: TAnswer[] = useMemo(() => {
-    const answers: TAnswer[] = rawAnswers.map((ans) => {
-      if (SPECIALQUESTION.has(ans.questionCode as string))
-        return { questionCode: ans.userCf as string, userCf: 1 };
-      return ans as TAnswer;
-    });
-    return answers;
-  }, [rawAnswers]);
-  // const answers = testData;
-
-  const { allCFSorted, diagnose } = useInferenceEngine(answers);
-  console.log(allCFSorted);
-
-  function backToMainMenu() {
-    setRawAnswers([]);
-    setSubmitted(false);
+  const navigate = useNavigate();
+  function startQuiz() {
+    navigate("/quiz/S0");
   }
 
-  const handleAnswer = useCallback(
-    (answer: TRawAnswer) => {
-      if (rawAnswers.length == 0) {
-        setRawAnswers([answer]);
-        return;
-      }
-      const ansIdx = rawAnswers.findIndex(
-        (ans) => answer.questionCode === ans.questionCode
-      );
-      if (ansIdx !== -1) {
-        setRawAnswers((prevAns) => {
-          const newAns = [...prevAns];
-          newAns[ansIdx] = answer;
-          return newAns;
-        });
-        return;
-      } else {
-        setRawAnswers((prevAns) => {
-          const newAns = [...prevAns];
-          newAns.push(answer);
-          return newAns;
-        });
-      }
-    },
-    [rawAnswers]
-  );
-
-  const handleSubmit = useCallback(() => {
-    if (answers.length !== QUESTIONS.length) {
-      alert("Mohon isi semua pertanyaan");
-      return;
-    }
-    console.log(answers);
-    diagnose(rules);
-    setSubmitted(true);
-  }, [answers, diagnose, rules]);
-
   return (
-    <div
-      className="flex flex-col items-center pt-5 pb-10 max-h-dvh overflow-auto bg-gradient-to-b from-blue-500 to-orange-200"
-      style={
-        {
-          // backgroundImage: `url(${background})`,
-          // // backgroundRepeat: "repeat-x",
-          // backgroundSize: "cover",
-        }
-      }
-    >
-      {!submitted ? (
-        <>
-          <div className="flex flex-wrap items-center sm:flex-nowrap sm:flex-col gap-5 p-5 justify-around">
-            <h1 className="-mt-4 font-bold text-3xl text-white">
-              Prediksi Pasang Surut Air Laut dan Keamanan Pantai
-            </h1>
-            <p className="mb-5 text-white font-medium">
-              Hallo, sebelum Anda memulai petualangan, pastikan Anda memeriksa
-              prediksi pasang surut air laut dan informasi keamanan pantai
-              melalui situs ini. Selamat berlibur dan nikmati hari Anda!
-            </p>
-            {QUESTIONS.map(([code, question], idx) => {
-              return (
-                <QuestionItem
-                  number={idx + 1}
-                  question={question}
-                  cfEnabled={true}
-                  key={code}
-                  questionCode={code}
-                  handleChange={handleAnswer}
-                />
-              );
-            })}
-          </div>
-          <Button
-            onClick={handleSubmit}
-            className="w-60 text-md font-semibold hover:"
-            style={{ backgroundColor: "#022090" }}
+    <div>
+      <nav
+        className="flex items-center px-5 pt-8 text-cyan-900 bg-top"
+        style={{ backgroundImage: "url(header-bg.png)" }}
+      >
+        <h2 className="text-2xl font-bold flex-1">Sistem Pakar</h2>
+        <ul className="flex gap-8 items-center">
+          <li>
+            <button type="button">
+              <a href="#home">Home</a>
+            </button>
+          </li>
+          <li>
+            <button type="button">
+              <a href="#alur-diagnosa">Alur Diagnosa</a>
+            </button>
+          </li>
+          <li>
+            <button type="button" onClick={startQuiz}>
+              Tanya Pakar
+            </button>
+          </li>
+        </ul>
+      </nav>
+      {/* <img
+          src="/public/header-bg.png"
+          className="absolute top-0 -z-10 lg:-mt-12"
+          alt=""
+        /> */}
+      <div
+        id="home"
+        className="flex items-center sm:h-dvh bg-cover bg-left sm:bg-center bg-no-repeat min-h-80"
+        style={{ backgroundImage: "url(header-bg.png)" }}
+      >
+        <div className="flex flex-col w-[400px] sm:w-[600px] pl-3 sm:pl-10 sm:-mt-28 ">
+          <h1 className="text-4xl font-extrabold text-blue-900 leading-snug">
+            <span className="text-orange-500">Prediksi </span>Pasang Surut Air
+            Laut dan Keamanan Pantai
+          </h1>
+          <p className="w-4/5">
+            Website ini membantu anda memprediksi pasang surut air laut dengan
+            akurat, mempermudah perencanaan wisata pantai dan antisipasi banjir
+            pesisir.
+          </p>
+          <button
+            type="button"
+            className="p-3 mt-4 w-40 bg-orange-500 text-white font-semibold rounded-full"
           >
-            Submit
-          </Button>
-        </>
-      ) : (
-        <div className="flex flex-col items-center gap-10">
-          <Result allCF={allCFSorted} />
-          <Button
-            onClick={backToMainMenu}
-            className="w-60 text-md font-semibold hover:"
-            style={{ backgroundColor: "#022090" }}
-          >
-            Diagnosa Lagi
-          </Button>
+            Tanya Pakar
+          </button>
         </div>
-      )}
+      </div>
+      {/* Alur Diagnosa */}
+      <div id="alur-diagnosa" className="flex flex-col items-center mt-14">
+        <div className="flex flex-col items-center text-center  max-w-[400px] w-5/6 sm:max-w-[700px] gap-3 *:leading-relaxed">
+          <h2 className="text-xl font-extrabold text-blue-900 ">
+            Ketahui Kondisi Pasang Surut Air Laut dan Temukan Solusi yang Tepat
+            untuk Menghadapinya!
+          </h2>
+          <p className="w-5/6">
+            Ikuti panduan di bawah ini untuk memudahkan Anda dalam mendiagnosis
+            dan memprediksi kondisi pasang surut air laut dengan tepat.
+          </p>
+        </div>
+        {/* layout */}
+        <div className="flex items-center justify-center flex-wrap gap-9 mt-16">
+          {/* card container */}
+          <div className="relative flex flex-col h-64 w-72 gap-5 justify-center items-center shadow-xl text-center rounded-lg px-4">
+            {/* circle */}
+            <div className="absolute -top-[2rem] flex items-center justify-center text-white aspect-square w-14 bg-blue-700 rounded-full text-xl font-extrabold shadow-md">
+              1
+            </div>
+            <h3 className="text-2xl font-bold text-blue-900">
+              Klik Tanya Pakar
+            </h3>
+            <p className="w-5/6 text-gray-500 text-sm h-20">
+              Silahkan klik tombol tanya pakar sebagai langkah awal dalam proses
+            </p>
+          </div>
+          {/* card container */}
+          <div className="relative flex flex-col h-64 w-72 gap-5 justify-center items-center shadow-xl text-center rounded-lg px-4">
+            {/* circle */}
+            <div className="absolute -top-[2rem] flex items-center justify-center text-white aspect-square w-14 bg-orange-500 rounded-full text-xl font-extrabold shadow-md">
+              2
+            </div>
+            <h3 className="text-2xl font-bold text-blue-900">
+              Klik Tanya Pakar
+            </h3>
+            <p className="w-5/6 text-gray-500 text-sm h-20">
+              Dalam tahap ini pengguna akan diberikan beberapa pertanyaan
+              terkait dengan kondisi yang ada di sekitar pantai
+            </p>
+          </div>
+          {/* card container */}
+          <div className="relative flex flex-col h-64 w-72 gap-5 justify-center items-center shadow-xl text-center rounded-lg px-4">
+            {/* circle */}
+            <div className="absolute -top-[2rem] flex items-center justify-center text-white aspect-square w-14 bg-blue-400 rounded-full text-xl font-extrabold shadow-md">
+              3
+            </div>
+            <h3 className="text-2xl font-bold text-blue-900">
+              Hasil Prediksi & Solusi
+            </h3>
+            <p className="w-5/6 text-gray-500 text-sm h-20">
+              Hasil dari prediksi pasang surut air laut akan muncul dan
+              memberikan solusi terbaik
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
