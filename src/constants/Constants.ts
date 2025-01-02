@@ -1,4 +1,4 @@
-type TQuestion = [string, string, TCategory];
+export type TQuestion = [string, string, TCategory];
 export const QUESTIONS: TQuestion[] = [
   ["S0", "Fase bulan saat ini", "fase bulan"],
   // ["G1", "Bulan Baru"],
@@ -37,7 +37,7 @@ export const QUESTIONS: TQuestion[] = [
   // ["G21", "Cuaca Berangin"],
 ];
 
-type TSpecialQuestionMapValue = {
+export type TSpecialQuestionMapValue = {
   code: string;
   statement: string;
 };
@@ -79,7 +79,7 @@ SPECIALQUESTION.set("S3", [
 //   ["A5", "Berbahaya Beraktivitas di Pantai"],
 // ]);
 
-type TPredictionResult = {
+export type TPredictionResult = {
   name: string;
   description: string;
   advice: string[];
@@ -159,3 +159,30 @@ export const PREDICTION_RESULT = new Map<string, TPredictionResult>([
 ]);
 
 new Map<string, object>();
+
+export const evidences = {
+  G1: { A2: 0.7 },
+  G2: { A2: 0.8 },
+  G3: { A1: 0.6 },
+  G4: { A2: 0.6 },
+  G5: { A1: 0.8 },
+  G6: { A3: 0.8 },
+  G7: { A4: 0.8 },
+  G8: { A5: 0.8 },
+  G9: { A1: 0.2 },
+  G10: { A2: 0.2 },
+  G11: { A4: 0.2 },
+  G12: { A2: 0.2 },
+  G13: { A3: 0.2 },
+  G14: { A1: 0.2 },
+  G15: { A2: 0.6 },
+  G16: { A5: 0.8 },
+  G17: { A1: 0.6 },
+  G18: { A4: 0.8 },
+  G19: { A1: 0.6 },
+  G20: { A3: 0.8 },
+  G21: { A2: 0.6 },
+  G22: { A4: 0.8 },
+  G23: { A2: 0.4 },
+  G24: { A1: 0.4 },
+};
