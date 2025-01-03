@@ -131,7 +131,7 @@ export default function ResultPages() {
                 Lihat Fakta yang Diperoleh
               </AccordionTrigger>
               <AccordionContent className="text-base">
-                {factsString(result?.facts)}
+                {result?.facts ? factsString(result?.facts) : ""}
               </AccordionContent>
             </AccordionItem>
           </Accordion>
