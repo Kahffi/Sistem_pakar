@@ -94,7 +94,7 @@ export default function HomePage() {
               2
             </div>
             <h3 className="text-2xl font-bold text-blue-900">
-              Klik Tanya Pakar
+              Pilih Kondisi Pantai
             </h3>
             <p className="w-5/6 text-gray-500 text-sm h-20">
               Dalam tahap ini pengguna akan diberikan beberapa pertanyaan
