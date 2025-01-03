@@ -78,7 +78,7 @@ export default function Quiz() {
                   {...(questionNumber === 1 ? { disabled: true } : null)}
                   type="button"
                   onClick={() => handleQuestionNavigation("prev")}
-                  className="px-3 py-2 border rounded-md disabled:opacity-50 disabled:cursor-not-allowed border-gray-600"
+                  className="px-3 py-2 border rounded-md disabled:opacity-50 disabled:cursor-not-allowed border-gray-600 hover:bg-gray-700 hover:text-white"
                 >
                   Sebelumnya
                 </button>
@@ -88,7 +88,7 @@ export default function Quiz() {
                     : { disabled: false })}
                   type="button"
                   onClick={() => handleQuestionNavigation("next")}
-                  className="px-3 py-2 border rounded-md disabled:opacity-50 disabled:cursor-not-allowed border-gray-600"
+                  className="px-3 py-2 border rounded-md disabled:opacity-50 disabled:cursor-not-allowed border-gray-600 hover:bg-gray-700 hover:text-white"
                 >
                   {isLastQuestion ? "Selesai" : "Selanjutnya"}
                 </button>

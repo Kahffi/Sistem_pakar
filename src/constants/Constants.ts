@@ -191,3 +191,54 @@ export const evidences = {
   G23: { A2: 0.4 },
   G24: { A1: 0.4 },
 };
+
+export const codesAndLabels = {
+  A: [
+    { code: "A1", label: "Air Surut" },
+    { code: "A2", label: "Air Pasang" },
+    { code: "A3", label: "Aman Beraktivitas" },
+    { code: "A4", label: "Waspada Beraktivitas" },
+    { code: "A5", label: "Hindari Aktivitas" },
+  ],
+
+  G: [
+    { code: "G1", label: "Bulan Baru" },
+    { code: "G2", label: "Bulan Purnama" },
+    { code: "G3", label: "Bulan Perbani" },
+    { code: "G4", label: "Bulan Cembung" },
+    { code: "G5", label: "Bulan Sabit" },
+    { code: "G6", label: "Arah angin ditunjukkan oleh arah hanyut asap" },
+    { code: "G7", label: "Angin terasa pada muka, daun-daun menggerisik" },
+    {
+      code: "G8",
+      label:
+        "Daun dan ranting kecil tetap bergerak, angin membentangkan bendera ringan",
+    },
+    {
+      code: "G9",
+      label: "Debu dan kertas naik ke atas, cabang kecil bergerak",
+    },
+    {
+      code: "G10",
+      label:
+        "Pohon kecil mulai bergoyang, timbul bentuk gelombang kecil pada perairan pendalaman",
+    },
+    {
+      code: "G11",
+      label:
+        "Cabang besar bergerak, kawat telpon kendengaran berdesing, sulit memakai payung",
+    },
+    { code: "G12", label: "Kepiting berada di pesisir pantai" },
+    { code: "G13", label: "Kepiting tidak berada di pesisir pantai" },
+    { code: "G14", label: "Kepiting menggores pasir" },
+    { code: "G15", label: "Kepiting tidak menggores pasir" },
+    { code: "G16", label: "Burung bertengger" },
+    { code: "G17", label: "Burung tidak bertengger" },
+    { code: "G18", label: "Curah hujan tinggi" },
+    { code: "G19", label: "Curah hujan rendah" },
+    { code: "G20", label: "Cuaca Cerah" },
+    { code: "G21", label: "Cuaca Berangin" },
+    { code: "G22", label: "Arah Arus Air Mendekati Pesisir" },
+    { code: "G23", label: "Arah Arus Air Menjauhi pesisir" },
+  ],
+};

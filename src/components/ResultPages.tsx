@@ -19,6 +19,8 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 
+import { codesAndLabels } from "@/constants/Constants";
+
 import bgBeach from "@/assets/bg-beach1.jpg";
 
 export default function ResultPages() {
@@ -34,8 +36,20 @@ export default function ResultPages() {
 
   const factsString = (facts: Set<string>) => {
     let str = "";
+    let i = 1;
     facts.forEach((fact) => {
-      str = str + `${fact} `;
+      const prefix = fact.charAt(0);
+
+      const x = codesAndLabels[prefix as "A" | "G"];
+      if (!x) return;
+      const label = x.find(({ code }) => code === fact)?.label;
+      if (i === facts.size) {
+        str = str + `${label}`;
+      } else {
+        str = str + `${label}, `;
+      }
+
+      i++;
     });
     return str;
   };
@@ -124,7 +138,7 @@ export default function ResultPages() {
           <Accordion
             type="single"
             collapsible
-            className="w-full bg-white/50 backdrop-blur-lg p-2 rounded-lg"
+            className="w-full bg-white/50 backdrop-blur-lg p-2 rounded-lg max-w-lg"
           >
             <AccordionItem value="item-1">
               <AccordionTrigger className="text-lg font-bold">

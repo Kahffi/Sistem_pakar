@@ -44,7 +44,7 @@ export default function HomePage() {
         <div className="flex flex-col w-[400px] sm:w-[600px] pl-3 sm:pl-10 sm:-mt-28 ">
           <h1 className="text-4xl font-extrabold text-blue-900 leading-snug">
             <span className="text-orange-500">Prediksi </span>Pasang Surut Air
-            Laut dan Keamanan Pantai
+            Laut dan Keamanan Pantai Selatan Jawa
           </h1>
           <p className="w-4/5">
             Website ini membantu anda memprediksi pasang surut air laut dengan

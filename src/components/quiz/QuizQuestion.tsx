@@ -14,14 +14,14 @@ export default function QuizQuestion({
   return (
     <div className="flex flex-col gap-5 font-semibold">
       {/* question */}
-      <div className="text-xl">
+      <div className="text-2xl">
         <span>{`${
           QUESTIONS.findIndex(([id]) => id === questionId) + 1
         }. `}</span>
         {question}
       </div>
       {/* options */}
-      <div>
+      <div className="text-xl">
         <QuestionOptions options={options} questionId={questionId} />
       </div>
     </div>
