@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Rule } from "./hooks/useRule";
-import { TAnswer } from "./pages/HomePage";
+import { TAnswer } from "./pages/HomePages";
 
 function useInferenceEngine(userData: TAnswer[]) {
   const [facts, setFacts] = useState<Set<string | undefined>>(new Set([]));
