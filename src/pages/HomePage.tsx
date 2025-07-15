@@ -9,11 +9,11 @@ export default function HomePage() {
   return (
     <div>
       <nav
-        className="flex items-center px-5 pt-8 text-cyan-900 bg-top"
+        className="flex items-center px-5 pt-5 text-cyan-900 bg-top"
         style={{ backgroundImage: "url(header-bg.png)" }}
       >
-        <h2 className="text-2xl font-bold flex-1">Sistem Pakar</h2>
-        <ul className="flex gap-8 items-center">
+        <h2 className="text-3xl font-bold flex-1">Sistem Pakar</h2>
+        <ul className="flex text-gray-200 font-bold gap-8 items-center">
           <li>
             <button type="button">
               <a href="#home">Home</a>
@@ -61,7 +61,10 @@ export default function HomePage() {
         </div>
       </div>
       {/* Alur Diagnosa */}
-      <div id="alur-diagnosa" className="flex flex-col items-center mt-14">
+      <div
+        id="alur-diagnosa"
+        className="flex flex-col items-center mt-28 mb-28"
+      >
         <div className="flex flex-col items-center text-center  max-w-[400px] w-5/6 sm:max-w-[700px] gap-3 *:leading-relaxed">
           <h2 className="text-xl font-extrabold text-blue-900 ">
             Ketahui Kondisi Pasang Surut Air Laut dan Temukan Solusi yang Tepat

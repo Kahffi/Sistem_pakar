@@ -63,14 +63,14 @@ export default function Quiz() {
           {/* main Content */}
           <div className="flex flex-col lg:flex-row gap-5 h-full flex-1 z-10">
             {/* question navigation */}
-            <div className="min-h-full border rounded-lg bg-white/40 backdrop-blur-md">
+            <div className="min-h-full border rounded-lg bg-gray-300/60 backdrop-blur-md">
               <QuestionNav
                 currentQuestId={currentQuestion[0]}
                 key={`${currentQuestion[0]}-nav`}
               />
             </div>
             {/* question */}
-            <main className="flex flex-col gap-28 flex-1 border rounded-lg p-5 bg-white/40 backdrop-blur-md">
+            <main className="flex flex-col gap-28 flex-1 border rounded-lg p-5 bg-gray-300/60 backdrop-blur-md">
               <QuizQuestion questionData={currentQuestion} />
               {/* button group */}
               <div className="w-full flex justify-between">
