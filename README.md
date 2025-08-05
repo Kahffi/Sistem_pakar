@@ -2,6 +2,7 @@
 
 **TideWise** is an expert system designed to assess tidal conditions and evaluate the safety level of coastal areas using the **forward chaining** inference method.
 
+🌐 **Live Demo**: [https://sistem-pakar-kelompok5.vercel.app](https://sistem-pakar-kelompok5.vercel.app)
 ---
 
 ## 🚀 How to Run Locally
