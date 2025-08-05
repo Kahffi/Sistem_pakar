@@ -12,7 +12,7 @@ export default function HomePage() {
         className="flex items-center px-5 pt-5 text-cyan-900 bg-top"
         style={{ backgroundImage: "url(header-bg.png)" }}
       >
-        <h2 className="text-3xl font-bold flex-1">Sistem Pakar</h2>
+        <h2 className="text-3xl font-bold flex-1">TideWise</h2>
         <ul className="flex text-gray-200 font-bold gap-8 items-center">
           <li>
             <button type="button">
